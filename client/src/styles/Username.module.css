@@ -13,12 +13,12 @@
 }
 
 .textBox {
-  @apply border-0 px-3 py-3 rounded-xl w-3/4 shadow-sm text-lg;
+  @apply border-0 px-3 py-3 w-full rounded-xl shadow-sm text-lg;
   @apply focus:outline-none;
 }
 
 .btn {
-  @apply border bg-indigo-500 w-3/4 py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center;
+  @apply border bg-indigo-500 w-full py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center;
 }
 
 .btn:hover {

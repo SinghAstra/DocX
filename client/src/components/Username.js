@@ -12,13 +12,21 @@ const Username = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const validateForm = () => {
+    const { username } = formData;
+    if (username.trim() === "") {
+      toast.error("Username is required");
+      return false;
+    } else if (username.includes(" ")) {
+      toast.error("Invalid username");
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.username === "") {
-      toast.error("Username is required");
-    } else if (formData.username.includes(" ")) {
-      toast.error("Invalid username");
-    } else {
+    if (validateForm()) {
       console.log("Form submitted:", formData);
       toast.success("Form submitted successfully!");
     }
