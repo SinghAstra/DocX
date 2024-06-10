@@ -1,3 +1,5 @@
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -5,10 +7,15 @@ import styles from "../styles/Username.module.css";
 
 const Password = () => {
   const [formData, setFormData] = useState({ password: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const lengthRegex = /.{8,}/;
@@ -98,14 +105,23 @@ const Password = () => {
           </div>
           <form className="py-1" onSubmit={handleSubmit}>
             <div className="flex flex-col items-center gap-2">
-              <input
-                className={styles.textBox}
-                type="text"
-                placeholder="Password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-              />
+              <div className="relative w-full flex items-center">
+                <input
+                  className={styles.textBox}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-2 p-2"
+                >
+                  <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+                </button>
+              </div>
               <button className={styles.btn} type="submit">
                 Sign in
               </button>
