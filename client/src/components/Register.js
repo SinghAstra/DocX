@@ -13,10 +13,14 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-
+  const [imageFile, setImageFile] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  console.log("imageFile", imageFile);
+  console.log("imageUrl", imageUrl);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +33,16 @@ const Register = () => {
         setIsPasswordValid(false);
       }
     }
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImageUrl(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const togglePasswordVisibility = () => {
@@ -124,7 +138,20 @@ const Register = () => {
         </div>
         <form className="py-1" onSubmit={handleSubmit}>
           <div className="flex justify-center py-2">
-            <img src={avatar} className={styles.profile_img} alt="avatar" />
+            <label htmlFor="profile" className="cursor-pointer">
+              <img
+                src={imageUrl || avatar}
+                className={styles.profile_img}
+                alt="avatar"
+              />
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              id="profile"
+              onChange={handleImageChange}
+              className="hidden"
+            />
           </div>
 
           <div className="flex flex-col items-center gap-2">
