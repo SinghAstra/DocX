@@ -13,10 +13,10 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-  const [imageFile, setImageFile] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
   const handleChange = (e) => {
