@@ -19,9 +19,6 @@ const Register = () => {
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
 
-  console.log("imageFile", imageFile);
-  console.log("imageUrl", imageUrl);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -92,9 +89,6 @@ const Register = () => {
 
   const validateForm = () => {
     const { username, email, password, confirmPassword } = formData;
-    // What about username, email spaces ? or email not being valid email
-    // Will we accept any string as username ?
-    // Implement validation for username and email
     if (!username || !email || !password) {
       toast.error("All fields are required");
       return false;
@@ -124,6 +118,12 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
+      const formDataToSend = new FormData();
+      formDataToSend.append("username", formData.username);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("password", formData.password);
+      formDataToSend.append("confirmPassword", formData.confirmPassword);
+      formDataToSend.append("profileImage", imageFile);
       console.log("Form submitted:", formData);
       toast.success("Form submitted successfully!");
     }
