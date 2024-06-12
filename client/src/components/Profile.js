@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import profile from "../assets/avatar_2.jpeg";
@@ -6,6 +7,7 @@ import styles from "../styles/Username.module.css";
 
 const Profile = () => {
   const [formData, setFormData] = useState({
+    username: "",
     firstName: "",
     lastName: "",
     mobileNumber: "",
@@ -16,7 +18,49 @@ const Profile = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
-  console.log("imageUrl is ", imageUrl);
+  useEffect(() => {
+    // Fetch user info
+    async function fetchUserInfo() {
+      const toastId = toast.loading("Fetching user info...");
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/user/sharma"
+        );
+        console.log("response is ", response);
+        const userData = response.data.user;
+        setFormData({
+          username: userData.username,
+          firstName: userData.firstName || "",
+          lastName: userData.lastName || "",
+          mobileNumber: userData.mobile || "",
+          email: userData.email,
+          address: userData.address || "",
+        });
+
+        toast.success(response.data.message);
+      } catch (error) {
+        toast.error(error.response.data.message);
+      } finally {
+        toast.dismiss(toastId);
+      }
+    }
+    fetchUserInfo();
+    // .then((response) => response.json())
+    // .then((data) => {
+    //   const userData = data.user;
+    //   setFormData({
+    //     firstName: userData.firstName || "",
+    //     lastName: userData.lastName || "",
+    //     mobileNumber: userData.mobile || "",
+    //     email: userData.email || "",
+    //     address: userData.address || "",
+    //   });
+    //   // You can also set the profile picture here if you have a URL for it
+    // })
+    // .catch((error) => {
+    //   toast.error(error.response.data.message);
+    // });
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,17 +79,16 @@ const Profile = () => {
 
   const validateForm = () => {
     const { firstName, lastName, mobileNumber, email, address } = formData;
-    if (!firstName || !lastName || !mobileNumber || !email || !address) {
-      toast.error("All fields are required");
-      return false;
-    }
     const namePattern = /^[a-zA-Z]{2,}$/;
-    if (!namePattern.test(firstName) || !namePattern.test(lastName)) {
+    if (
+      (firstName !== "" || lastName !== "") &&
+      (!namePattern.test(firstName) || !namePattern.test(lastName))
+    ) {
       toast.error("Invalid firstName or lastName");
       return false;
     }
     const mobilePattern = /^[0-9]{10}$/;
-    if (!mobilePattern.test(mobileNumber)) {
+    if (mobileNumber !== "" && !mobilePattern.test(mobileNumber)) {
       toast.error("Mobile Number should contain exactly 10 digits");
       return false;
     }
@@ -54,8 +97,8 @@ const Profile = () => {
       toast.error("Please enter a valid email address");
       return false;
     }
-    if (address.length < 5) {
-      toast.error("Address should be at least 5 characters long");
+    if (address !== "" && address.length < 5) {
+      toast.error("Please enter a valid address");
       return false;
     }
     return true;
@@ -76,7 +119,7 @@ const Profile = () => {
         <div className="flex flex-col items-center">
           <h4 className="text-5xl font-bold">Profile</h4>
           <span className="py-1 text-base w-2/3 text-center text-gray-500">
-            @Username123
+            @{formData.username}
           </span>
         </div>
         <form className="py-1 " onSubmit={handleSubmit}>
