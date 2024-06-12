@@ -57,12 +57,9 @@ export const registerUserController = async (req, res) => {
     await newUser.save();
 
     // Return a success response
-    res
-      .status(201)
-      .json({ message: "User registered successfully.", user: newUser });
+    res.status(201).json({ message: "User registered successfully." });
   } catch (error) {
-    console.error("Error registering user:", error);
-    res.status(500).json({ message: "Server error. Please try again later." });
+    res.status(500).json({ message: "Error while Registering User." });
   }
 };
 
@@ -74,8 +71,40 @@ export const authenticateUserController = (req, res) => {
   res.json({ message: "Authenticate user logic here" });
 };
 
-export const loginUserController = (req, res) => {
-  res.json({ message: "Login user logic here" });
+export const loginUserController = async (req, res) => {
+  const { username, password } = req.body;
+
+  // Check for missing credentials
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ error: "Username and password are required" });
+  }
+
+  try {
+    // Check if user exists in the database
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Compare password using bcrypt
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid password" });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, username: user.username },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    res.json({ message: "Login successful", username: user.username, token });
+  } catch (error) {
+    res.status(500).json({ error: "Error while Logging in user." });
+  }
 };
 
 export const fetchUserController = (req, res) => {
