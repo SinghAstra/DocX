@@ -79,6 +79,7 @@ const Password = () => {
           }
         );
         console.log("response is ", response);
+        localStorage.setItem("token", response.data.token);
         toast.success(response.data.message);
       } catch (error) {
         console.log("error: ", error);

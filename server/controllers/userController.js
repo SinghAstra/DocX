@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { validateEmail, validatePassword } from "../utils/validation.js";
 
@@ -78,20 +79,20 @@ export const loginUserController = async (req, res) => {
   if (!username || !password) {
     return res
       .status(400)
-      .json({ error: "Username and password are required" });
+      .json({ message: "Username and password are required" });
   }
 
   try {
     // Check if user exists in the database
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Compare password using bcrypt
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid password" });
+      return res.status(401).json({ message: "Incorrect password" });
     }
 
     // Generate JWT token
@@ -103,38 +104,31 @@ export const loginUserController = async (req, res) => {
 
     res.json({ message: "Login successful", username: user.username, token });
   } catch (error) {
-    res.status(500).json({ error: "Error while Logging in user." });
+    res.status(500).json({ message: "Error while Logging in user." });
   }
 };
 
 export const fetchUserController = async (req, res) => {
-  const { username } = req.query;
-
-  // Check if username is provided in the query
-  if (!username) {
-    return res
-      .status(400)
-      .json({ error: "Username query parameter is required" });
-  }
-
   try {
+    const { userName } = req.params;
+
+    // Check if username is provided in the query
+    if (!userName) {
+      return res.status(400).json({ message: "Username is required" });
+    }
     // Check if user exists in the database
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ username: userName });
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     // Extract non-sensitive user data to return
-    const { _id, username, email } = user;
-    const userData = {
-      id: _id,
-      username,
-      email,
-    };
+    const { password, ...rest } = user.toObject(); // Convert Mongoose document to plain JS object
+    const userData = Object.assign({}, rest);
 
-    res.json({ user: userData });
+    res.json({ user: userData, message: "User Info fetched" });
   } catch (error) {
-    res.status(500).json({ error: "Error while fetching user Info." });
+    res.status(500).json({ message: "Error while fetching user Info." });
   }
 };
 
@@ -150,8 +144,57 @@ export const createResetSessionController = (req, res) => {
   res.json({ message: "Create reset session logic here" });
 };
 
-export const updateUserController = (req, res) => {
-  res.json({ message: "Update user logic here" });
+export const updateUserController = async (req, res) => {
+  const { username } = req.user;
+  const updateData = req.body;
+
+  // Check if userName is provided
+  if (!username) {
+    return res.status(400).json({ message: "Username is required" });
+  }
+
+  // Validate the provided data
+  const allowedUpdates = [
+    "email",
+    "firstName",
+    "lastName",
+    "mobile",
+    "address",
+    "profile",
+  ];
+  const updates = Object.keys(updateData);
+
+  const isValidOperation = updates.every((update) =>
+    allowedUpdates.includes(update)
+  );
+
+  if (!isValidOperation) {
+    return res.status(400).json({ message: "Invalid updates!" });
+  }
+
+  try {
+    // Check if user exists
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user information
+    updates.forEach((update) => {
+      user[update] = updateData[update];
+    });
+
+    await user.save();
+
+    // Extract non-sensitive user data to return
+    const { password, ...rest } = user.toObject(); // Convert Mongoose document to plain JS object
+    const userData = Object.assign({}, rest);
+
+    res.json({ user: userData, message: "Profile Updated." });
+  } catch (error) {
+    res.status(500).json({ message: "Error while updating user info" });
+  }
 };
 
 export const resetPasswordController = (req, res) => {

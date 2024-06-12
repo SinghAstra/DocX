@@ -87,16 +87,20 @@ const Profile = () => {
     const { email, firstName, lastName, mobile, address, profile } = formData;
     if (validateForm()) {
       try {
+        const token = localStorage.getItem("token");
         const response = await axios.put(
-          `http://localhost:5000/api/user/updateUser/${formData.username}`,
-          { email, firstName, lastName, mobile, address, profile }
+          `http://localhost:5000/api/user/updateUser`,
+          { email, firstName, lastName, mobile, address, profile },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
-        console.log("Update response:", response);
         toast.success(response.data.message);
         fetchUserInfo();
       } catch (error) {
         toast.error(error.response.data.message);
-        console.error("Update error:", error);
       }
     }
   };
