@@ -1,5 +1,6 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -115,17 +116,27 @@ const Register = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      const formDataToSend = new FormData();
-      formDataToSend.append("username", formData.username);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("password", formData.password);
-      formDataToSend.append("confirmPassword", formData.confirmPassword);
-      formDataToSend.append("profileImage", imageFile);
-      console.log("Form submitted:", formData);
-      toast.success("Form submitted successfully!");
+    // if (validateForm()) {
+    //   const formDataToSend = new FormData();
+    //   formDataToSend.append("username", formData.username);
+    //   formDataToSend.append("email", formData.email);
+    //   formDataToSend.append("password", formData.password);
+    //   formDataToSend.append("confirmPassword", formData.confirmPassword);
+    //   formDataToSend.append("profileImage", imageFile);
+    //   console.log("Form submitted:", formData);
+    //   toast.success("Form submitted successfully!");
+    // }
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/user/register",
+        formData
+      );
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      // console.log("Error while registering :", error);
     }
   };
 
