@@ -18,48 +18,25 @@ const Profile = () => {
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
-  useEffect(() => {
-    // Fetch user info
-    async function fetchUserInfo() {
-      const toastId = toast.loading("Fetching user info...");
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/user/sharma"
-        );
-        console.log("response is ", response);
-        const userData = response.data.user;
-        setFormData({
-          username: userData.username,
-          firstName: userData.firstName || "",
-          lastName: userData.lastName || "",
-          mobileNumber: userData.mobile || "",
-          email: userData.email,
-          address: userData.address || "",
-        });
-
-        toast.success(response.data.message);
-      } catch (error) {
-        toast.error(error.response.data.message);
-      } finally {
-        toast.dismiss(toastId);
-      }
+  async function fetchUserInfo() {
+    try {
+      const response = await axios.get("http://localhost:5000/api/user/sharma");
+      const userData = response.data.user;
+      setFormData({
+        username: userData.username,
+        firstName: userData.firstName || "",
+        lastName: userData.lastName || "",
+        mobileNumber: userData.mobile || "",
+        email: userData.email,
+        address: userData.address || "",
+      });
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
+  }
+
+  useEffect(() => {
     fetchUserInfo();
-    // .then((response) => response.json())
-    // .then((data) => {
-    //   const userData = data.user;
-    //   setFormData({
-    //     firstName: userData.firstName || "",
-    //     lastName: userData.lastName || "",
-    //     mobileNumber: userData.mobile || "",
-    //     email: userData.email || "",
-    //     address: userData.address || "",
-    //   });
-    //   // You can also set the profile picture here if you have a URL for it
-    // })
-    // .catch((error) => {
-    //   toast.error(error.response.data.message);
-    // });
   }, []);
 
   const handleChange = (e) => {
@@ -80,11 +57,12 @@ const Profile = () => {
   const validateForm = () => {
     const { firstName, lastName, mobileNumber, email, address } = formData;
     const namePattern = /^[a-zA-Z]{2,}$/;
-    if (
-      (firstName !== "" || lastName !== "") &&
-      (!namePattern.test(firstName) || !namePattern.test(lastName))
-    ) {
-      toast.error("Invalid firstName or lastName");
+    if (firstName !== "" && !namePattern.test(firstName)) {
+      toast.error("Invalid firstName");
+      return false;
+    }
+    if (lastName !== "" && !namePattern.test(lastName)) {
+      toast.error("Invalid lastName");
       return false;
     }
     const mobilePattern = /^[0-9]{10}$/;
@@ -104,11 +82,22 @@ const Profile = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { email, firstName, lastName, mobile, address, profile } = formData;
     if (validateForm()) {
-      console.log("Form submitted:", formData);
-      toast.success("Form submitted successfully!");
+      try {
+        const response = await axios.put(
+          `http://localhost:5000/api/user/updateUser/${formData.username}`,
+          { email, firstName, lastName, mobile, address, profile }
+        );
+        console.log("Update response:", response);
+        toast.success(response.data.message);
+        fetchUserInfo();
+      } catch (error) {
+        toast.error(error.response.data.message);
+        console.error("Update error:", error);
+      }
     }
   };
 
