@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
@@ -24,11 +25,19 @@ const Username = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { username } = formData;
     if (validateForm()) {
-      console.log("Form submitted:", formData);
-      toast.success("Form submitted successfully!");
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/user/${username}`
+        );
+        toast.success(response.data.message);
+        console.log("user is ", response.data.user);
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
     }
   };
 
@@ -63,7 +72,7 @@ const Username = () => {
 
           <div className="text-center py-4">
             <span className="text-gray-500">
-              Not a Member{" "}
+              Not a Member ?{" "}
               <Link className="text-red-500" to="/register">
                 Register Now
               </Link>
