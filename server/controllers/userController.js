@@ -107,8 +107,35 @@ export const loginUserController = async (req, res) => {
   }
 };
 
-export const fetchUserController = (req, res) => {
-  res.json({ message: "Fetch user logic here" });
+export const fetchUserController = async (req, res) => {
+  const { username } = req.query;
+
+  // Check if username is provided in the query
+  if (!username) {
+    return res
+      .status(400)
+      .json({ error: "Username query parameter is required" });
+  }
+
+  try {
+    // Check if user exists in the database
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Extract non-sensitive user data to return
+    const { _id, username, email } = user;
+    const userData = {
+      id: _id,
+      username,
+      email,
+    };
+
+    res.json({ user: userData });
+  } catch (error) {
+    res.status(500).json({ error: "Error while fetching user Info." });
+  }
 };
 
 export const generateOTPController = (req, res) => {
