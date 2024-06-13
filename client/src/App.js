@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/Login";
 import PageNotFound from "./components/PageNotFound";
 import Profile from "./components/Profile";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Recovery from "./components/Recovery";
 import Register from "./components/Register";
 import Reset from "./components/Reset";
@@ -19,7 +20,7 @@ function App() {
     },
     {
       path: "/register",
-      element: <Register></Register>,
+      element: <ProtectedRoute component={Register} />,
     },
     {
       path: "/recovery",

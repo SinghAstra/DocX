@@ -3,6 +3,15 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { validateEmail, validatePassword } from "../utils/validation.js";
 
+function generateOTP() {
+  const digits = "0123456789";
+  let otp = "";
+  for (let i = 0; i < 6; i++) {
+    otp += digits[Math.floor(Math.random() * digits.length)];
+  }
+  return otp;
+}
+
 export const registerUserController = async (req, res) => {
   const { username, password, profile, email } = req.body;
 
@@ -57,8 +66,16 @@ export const registerUserController = async (req, res) => {
     // Save the user to the database
     await newUser.save();
 
+    const token = jwt.sign(
+      { id: newUser._id, username: newUser.username },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
+
     // Return a success response
-    res.status(201).json({ message: "User registered successfully." });
+    res.status(201).json({ message: "User registered successfully.", token });
   } catch (error) {
     res.status(500).json({ message: "Error while Registering User." });
   }
@@ -106,6 +123,10 @@ export const loginUserController = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error while Logging in user." });
   }
+};
+
+export const forgotPasswordController = async (req, res) => {
+  res.json({ message: "Forgot password logic here" });
 };
 
 export const fetchUserController = async (req, res) => {

@@ -1,10 +1,11 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import avatar from "../assets/profile.png";
+import { AuthContext } from "../context/AuthContext";
 import styles from "../styles/Username.module.css";
 
 const Register = () => {
@@ -19,6 +20,7 @@ const Register = () => {
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -134,6 +136,8 @@ const Register = () => {
         formData
       );
       toast.success(response.data.message);
+      toast.success(response.data.token);
+      login(response.data.token);
     } catch (error) {
       toast.error(error.response.data.message);
       // console.log("Error while registering :", error);

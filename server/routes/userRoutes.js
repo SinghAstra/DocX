@@ -16,16 +16,18 @@ import authMiddleware from "../middleware/auth.js";
 const router = express.Router();
 
 router.post("/register", registerUserController);
-router.post("/registerMail", sendEmailController);
-router.post("/authenticate", authenticateUserController);
 router.post("/login", loginUserController);
+// router.post("/forgotPassword", forgotPasswordController);
 
 router.get("/:userName", fetchUserController);
-router.get("/generateOTP", generateOTPController);
-router.get("/verifyOTP", verifyOTPController);
-router.get("/createResetSession", createResetSessionController);
 
 router.put("/updateUser", authMiddleware, updateUserController);
-router.post("/resetPassword", resetPasswordController);
 
 export default router;
+
+// router.post("/authenticate", authenticateUserController);
+// router.post("/registerMail", sendEmailController);
+// router.get("/generateOTP", generateOTPController);
+// router.get("/verifyOTP", verifyOTPController);
+// router.get("/createResetSession", createResetSessionController);
+// router.post("/resetPassword", resetPasswordController);
