@@ -12,8 +12,11 @@ import { AuthContext } from "./context/AuthContext";
 import Home from "./pages/Home";
 
 function App() {
-  const { isAuthenticated } = useContext(AuthContext);
-  console.log("isAuthenticated", isAuthenticated);
+  const { isAuthenticated, loading } = useContext(AuthContext);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   const router = createBrowserRouter([
     {
