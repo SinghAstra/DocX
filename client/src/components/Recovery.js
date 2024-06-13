@@ -14,18 +14,8 @@ const Recovery = () => {
   const validateForm = () => {
     const { otp } = formData;
 
-    if (!otp) {
-      toast.error("OTP cannot be empty");
-      return false;
-    }
-
-    if (otp.length !== 6) {
-      toast.error("OTP must be 6 digits long");
-      return false;
-    }
-
-    if (!/^\d{6}$/.test(otp)) {
-      toast.error("OTP must be a 6-digit number");
+    if (!otp || otp.length !== 6 || !/^\d{6}$/.test(otp)) {
+      toast.error("Invalid OTP");
       return false;
     }
 

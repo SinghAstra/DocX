@@ -1,49 +1,11 @@
-import axios from "axios";
-import React, { useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
+import React from "react";
 import { Link } from "react-router-dom";
 import avatar from "../assets/profile.png";
 import styles from "../styles/Username.module.css";
 
-const Username = () => {
-  const [formData, setFormData] = useState({ username: "" });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const validateForm = () => {
-    const { username } = formData;
-    if (username.trim() === "") {
-      toast.error("Username is required");
-      return false;
-    } else if (username.includes(" ")) {
-      toast.error("Invalid username");
-      return false;
-    }
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { username } = formData;
-    if (validateForm()) {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/user/${username}`
-        );
-        toast.success(response.data.message);
-        console.log("user is ", response.data.user);
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-    }
-  };
-
+const Username = ({ username, handleChange, handleUsernameSubmit }) => {
   return (
     <div className="container mx-auto flex items-center justify-center h-screen">
-      <Toaster />
       <div className={styles.glass}>
         <div className="flex flex-col items-center">
           <h4 className="text-5xl font-bold">Hello Again!</h4>
@@ -51,7 +13,7 @@ const Username = () => {
             Explore More by connecting with us.
           </span>
         </div>
-        <form className="py-1" onSubmit={handleSubmit}>
+        <form className="py-1" onSubmit={handleUsernameSubmit}>
           <div className="flex justify-center py-2">
             <img src={avatar} className={styles.profile_img} alt="avatar" />
           </div>
@@ -62,7 +24,7 @@ const Username = () => {
               type="text"
               placeholder="Username"
               name="username"
-              value={formData.username}
+              value={username}
               onChange={handleChange}
             />
             <button className={styles.btn} type="submit">
