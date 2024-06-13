@@ -8,6 +8,7 @@ import {
   registerUserController,
   resetPasswordController,
   sendEmailController,
+  tokenVerificationController,
   updateUserController,
   verifyOTPController,
 } from "../controllers/userController.js";
@@ -19,6 +20,7 @@ router.post("/register", registerUserController);
 router.post("/login", loginUserController);
 // router.post("/forgotPassword", forgotPasswordController);
 
+router.get("/", authMiddleware, tokenVerificationController);
 router.get("/:userName", fetchUserController);
 
 router.put("/updateUser", authMiddleware, updateUserController);

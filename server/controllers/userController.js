@@ -129,6 +129,30 @@ export const forgotPasswordController = async (req, res) => {
   res.json({ message: "Forgot password logic here" });
 };
 
+export const tokenVerificationController = async (req, res) => {
+  try {
+    const { userName } = req.user;
+
+    // Check if username is provided in the query
+    if (!userName) {
+      return res.status(400).json({ message: "Username is required" });
+    }
+    // Check if user exists in the database
+    const user = await User.findOne({ username: userName });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Extract non-sensitive user data to return
+    const { password, ...rest } = user.toObject(); // Convert Mongoose document to plain JS object
+    const userData = Object.assign({}, rest);
+
+    res.json({ user: userData, message: "User Info fetched" });
+  } catch (error) {
+    res.status(500).json({ message: "Error while fetching user Info." });
+  }
+};
+
 export const fetchUserController = async (req, res) => {
   try {
     const { userName } = req.params;
