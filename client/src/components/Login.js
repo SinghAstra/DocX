@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
 import avatar from "../assets/profile.png";
+import { AuthContext } from "../context/AuthContext";
 import Password from "./Password";
 import Username from "./Username";
 
@@ -9,6 +10,7 @@ const Login = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [profileImage, setProfileImage] = useState(avatar);
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,7 +79,7 @@ const Login = () => {
           }
         );
         localStorage.setItem("token", response.data.token);
-        toast.success(response.data.message);
+        login(response.data.token);
         console.log("response ", response.data);
       } catch (error) {
         toast.error(error.response.data.message);

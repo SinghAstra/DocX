@@ -1,4 +1,5 @@
 import React from "react";
+import { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import avatar from "../assets/profile.png";
 import styles from "../styles/Username.module.css";
@@ -6,6 +7,7 @@ import styles from "../styles/Username.module.css";
 const Username = ({ username, handleChange, handleUsernameSubmit }) => {
   return (
     <div className="container mx-auto flex items-center justify-center h-screen">
+      <Toaster />
       <div className={styles.glass}>
         <div className="flex flex-col items-center">
           <h4 className="text-5xl font-bold">Hello Again!</h4>

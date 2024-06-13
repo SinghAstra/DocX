@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/Login";
 import PageNotFound from "./components/PageNotFound";
@@ -5,12 +6,16 @@ import Profile from "./components/Profile";
 import Recovery from "./components/Recovery";
 import Register from "./components/Register";
 import Reset from "./components/Reset";
+import { AuthContext } from "./context/AuthContext";
+import Home from "./pages/Home";
 
 function App() {
+  const { isAuthenticated } = useContext(AuthContext);
+
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Login></Login>,
+      element: isAuthenticated ? <Home /> : <Login />,
     },
     {
       path: "/register",
