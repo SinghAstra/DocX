@@ -1,43 +1,24 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import profile from "../assets/avatar_2.jpeg";
+import { AuthContext } from "../context/AuthContext";
 import styles from "../styles/Username.module.css";
 
 const Profile = () => {
+  const { user, setUser, logout } = useContext(AuthContext);
   const [formData, setFormData] = useState({
-    username: "",
-    firstName: "",
-    lastName: "",
-    mobileNumber: "",
-    email: "email@gmail.com",
-    address: "",
+    username: user.username,
+    firstName: user.firstName || "",
+    lastName: user.lastName || "",
+    mobileNumber: user.mobile || "",
+    email: user.email,
+    address: user.address || "",
   });
 
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
-
-  async function fetchUserInfo() {
-    try {
-      const response = await axios.get("http://localhost:5000/api/user/sharma");
-      const userData = response.data.user;
-      setFormData({
-        username: userData.username,
-        firstName: userData.firstName || "",
-        lastName: userData.lastName || "",
-        mobileNumber: userData.mobile || "",
-        email: userData.email,
-        address: userData.address || "",
-      });
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  }
-
-  useEffect(() => {
-    fetchUserInfo();
-  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -97,8 +78,16 @@ const Profile = () => {
             },
           }
         );
+        setUser({
+          ...user,
+          email,
+          firstName,
+          lastName,
+          mobile,
+          address,
+          profile,
+        });
         toast.success(response.data.message);
-        fetchUserInfo();
       } catch (error) {
         toast.error(error.response.data.message);
       }
@@ -110,8 +99,8 @@ const Profile = () => {
       <Toaster />
       <div className={`${styles.glass} py-2`}>
         <div className="flex flex-col items-center">
-          <h4 className="text-5xl font-bold">Profile</h4>
-          <span className="py-1 text-base w-2/3 text-center text-gray-500">
+          <h4 className="text-5xl font-medium text-[#92DCE5]">Profile</h4>
+          <span className="py-1 text-base w-2/3 text-center text-[#FBFBFB]">
             @{formData.username}
           </span>
         </div>
@@ -142,6 +131,7 @@ const Profile = () => {
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
+                autoComplete="off"
               />
               <input
                 className={styles.textBox}
@@ -182,16 +172,16 @@ const Profile = () => {
               Update
             </button>
           </div>
-
-          <div className="text-center py-4">
-            <span className="text-gray-500">
-              Come back Later ?{" "}
-              <Link className="text-red-500" to="/register">
-                Log Out
-              </Link>
-            </span>
-          </div>
         </form>
+
+        <div className="text-center py-4">
+          <span className="text-black">
+            Come back Later ?{" "}
+            <button className="text-red-500" onClick={logout}>
+              Log Out
+            </button>
+          </span>
+        </div>
       </div>
     </div>
   );

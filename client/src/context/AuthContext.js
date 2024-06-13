@@ -14,8 +14,9 @@ const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token) {
       verifyToken(token);
+    } else {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   const verifyToken = async (token) => {
@@ -31,6 +32,8 @@ const AuthProvider = ({ children }) => {
       setIsAuthenticated(false);
       setUser(null);
       localStorage.removeItem("token");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,7 +50,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, user, loading, login, logout }}
+      value={{ isAuthenticated, user, setUser, loading, login, logout }}
     >
       {children}
     </AuthContext.Provider>

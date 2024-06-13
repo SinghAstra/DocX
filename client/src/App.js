@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Loader from "./components/Loader/Loader";
 import Login from "./components/Login";
 import PageNotFound from "./components/PageNotFound";
 import PrivateRoute from "./components/PrivateRoute";
@@ -16,7 +17,7 @@ function App() {
   const { isAuthenticated, loading } = useContext(AuthContext);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   const router = createBrowserRouter([

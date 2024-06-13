@@ -1,10 +1,10 @@
 .glass {
-  background: rgba(255, 255, 255, 0.55);
+  background: #716969;
   border-radius: 16px;
   box-shadow: 0 4px 30px #4747470b;
   backdrop-filter: blur(7.1px);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  @apply border-4 border-gray-50 shrink-0 h-auto w-[30%] rounded-3xl p-7 min-w-max;
+  @apply border-4 border-[#92DCE5] shrink-0 h-auto w-[30%] rounded-3xl p-7 min-w-max;
 }
 
 .profile_img {
@@ -15,12 +15,14 @@
 .textBox {
   @apply border-0 px-3 py-3 w-full rounded-xl shadow-sm text-lg;
   @apply focus:outline-none;
+  background-color: #2d2e2e;
+  color: white;
 }
 
 .btn {
-  @apply border bg-indigo-500 w-full py-4 rounded-lg text-gray-50 text-xl shadow-sm text-center;
+  @apply bg-[#92dce5] w-full py-4 rounded-lg text-[#0F0F0F] font-medium text-xl shadow-sm text-center;
 }
 
 .btn:hover {
-  background-color: #ff6a6a;
+  background-color: #51d1e2;
 }

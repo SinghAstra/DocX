@@ -4,6 +4,5 @@
 @tailwind utilities;
 body {
   font-family: "Poppins";
-  background: #dcdce6;
-  background-image: url("./assets/Background.png");
+  background: #0f0f0f;
 }
