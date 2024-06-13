@@ -2,8 +2,9 @@ import { useContext } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/Login";
 import PageNotFound from "./components/PageNotFound";
+import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./components/Profile";
-import ProtectedRoute from "./components/ProtectedRoute";
+import PublicRoute from "./components/PublicRoute";
 import Recovery from "./components/Recovery";
 import Register from "./components/Register";
 import Reset from "./components/Reset";
@@ -12,6 +13,7 @@ import Home from "./pages/Home";
 
 function App() {
   const { isAuthenticated } = useContext(AuthContext);
+  console.log("isAuthenticated", isAuthenticated);
 
   const router = createBrowserRouter([
     {
@@ -20,19 +22,19 @@ function App() {
     },
     {
       path: "/register",
-      element: <ProtectedRoute component={Register} />,
+      element: <PublicRoute component={Register} />,
     },
     {
       path: "/recovery",
-      element: <Recovery></Recovery>,
+      element: <PublicRoute component={Recovery} />,
     },
     {
       path: "/profile",
-      element: <Profile></Profile>,
+      element: <PrivateRoute component={Profile} />,
     },
     {
       path: "/reset",
-      element: <Reset></Reset>,
+      element: <PublicRoute component={Reset} />,
     },
     {
       path: "*",
