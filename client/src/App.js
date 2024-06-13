@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./components/Login";
 import PageNotFound from "./components/PageNotFound";
