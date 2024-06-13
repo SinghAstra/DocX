@@ -8,6 +8,8 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
+  console.log("loading is ", loading);
+  console.log("user is ", user);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -32,13 +34,14 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = (token) => {
-    setIsAuthenticated(true);
+  const login = async (token) => {
     localStorage.setItem("token", token);
+    await verifyToken(token);
   };
 
   const logout = () => {
     setIsAuthenticated(false);
+    setUser(null);
     localStorage.removeItem("token");
   };
 

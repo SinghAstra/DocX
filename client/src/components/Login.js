@@ -8,7 +8,10 @@ import Username from "./Username";
 
 const Login = () => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({
+    username: "root",
+    password: "QWqw!@12",
+  });
   const [profileImage, setProfileImage] = useState(avatar);
   const { login } = useContext(AuthContext);
 
