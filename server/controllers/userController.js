@@ -5,15 +5,6 @@ import User from "../models/User.js";
 import sendEmail from "../utils/sendEmail.js";
 import { validateEmail, validatePassword } from "../utils/validation.js";
 
-function generateOTP() {
-  const digits = "0123456789";
-  let otp = "";
-  for (let i = 0; i < 6; i++) {
-    otp += digits[Math.floor(Math.random() * digits.length)];
-  }
-  return otp;
-}
-
 export const registerUserController = async (req, res) => {
   const { username, password, profile, email } = req.body;
 
@@ -129,6 +120,7 @@ export const loginUserController = async (req, res) => {
 
 export const forgotPasswordController = async (req, res) => {
   const { email } = req.body;
+
   const user = await User.findOne({ email });
   try {
     if (!user) {
@@ -158,8 +150,35 @@ export const forgotPasswordController = async (req, res) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     await user.save();
-    console.log("error is ", error);
     res.status(500).json({ message: "Error sending email" });
+  }
+};
+
+export const verifyOTPController = async (req, res) => {
+  const { email, otp } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const hashedOtp = crypto.createHash("sha256").update(otp).digest("hex");
+
+    if (
+      hashedOtp !== user.resetPasswordToken ||
+      Date.now() > user.resetPasswordExpire
+    ) {
+      return res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    res.status(200).json({ message: "OTP verified" });
+  } catch (error) {
+    res.status(500).json({ message: "Error verifying OTP" });
   }
 };
 
@@ -213,10 +232,6 @@ export const fetchUserController = async (req, res) => {
 
 export const generateOTPController = (req, res) => {
   res.json({ message: "Generate OTP logic here" });
-};
-
-export const verifyOTPController = (req, res) => {
-  res.json({ message: "Verify OTP logic here" });
 };
 
 export const createResetSessionController = (req, res) => {
