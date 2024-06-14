@@ -2,7 +2,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useContext, useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import avatar from "../assets/profile.png";
 import { AuthContext } from "../context/AuthContext";
@@ -146,10 +146,9 @@ const Register = () => {
 
   return (
     <div className="container mx-auto flex items-center justify-center h-screen">
-      <Toaster />
       <div className={`${styles.glass} p-2`}>
         <div className="flex flex-col items-center">
-          <h4 className="text-3xl font-bold">Register</h4>
+          <h4 className="text-3xl font-medium text-[#7edbe9]">Register</h4>
         </div>
         <form className="py-1" onSubmit={handleSubmit}>
           <div className="flex justify-center py-2">
@@ -228,9 +227,9 @@ const Register = () => {
           </div>
 
           <div className="text-center py-1">
-            <span className="text-gray-500">
+            <span className="text-black font-medium">
               Already Member ?{" "}
-              <Link className="text-red-500" to="/">
+              <Link className="text-[#06BEE1]" to="/">
                 Login Now
               </Link>
             </span>

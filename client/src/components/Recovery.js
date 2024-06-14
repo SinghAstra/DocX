@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import styles from "../styles/Username.module.css";
 
@@ -32,13 +32,14 @@ const Recovery = () => {
 
   return (
     <div className="container mx-auto flex items-center justify-center h-screen">
-      <Toaster />
       <div className={styles.glass}>
         <div className="flex flex-col items-center justify-between h-full">
           <div className="flex flex-col items-center">
-            <h4 className="text-3xl font-bold">Recover Account!</h4>
-            <span className="pt-3 text-xl text-center text-gray-500 ">
-              Enter the 6 digit OTP
+            <h4 className="text-3xl font-medium text-[#7edbe9]">
+              Recover Account!
+            </h4>
+            <span className="text-xl text-center text-white pt-10">
+              Enter the OTP
               <br /> sent to your email Address
             </span>
           </div>
@@ -58,9 +59,9 @@ const Recovery = () => {
             </div>
 
             <div className="text-center py-4">
-              <span className="text-gray-500">
+              <span className="text-black font-medium">
                 Email Not Sent ?{" "}
-                <Link className="text-red-500" to="/recovery">
+                <Link className="text-[#06BEE1]" to="/recovery">
                   Resend Email
                 </Link>
               </span>

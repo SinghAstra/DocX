@@ -8,8 +8,6 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
-  console.log("loading is ", loading);
-  console.log("user is ", user);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {

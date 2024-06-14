@@ -1,7 +1,7 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import styles from "../styles/Username.module.css";
 
 const Reset = () => {
@@ -66,7 +66,6 @@ const Reset = () => {
 
   return (
     <div className="container mx-auto flex items-center justify-center h-screen">
-      <Toaster />
       <div className={`${styles.glass} flex flex-col justify-between`}>
         <div className="flex flex-col items-center">
           <div>

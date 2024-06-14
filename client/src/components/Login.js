@@ -11,8 +11,9 @@ const Login = () => {
   const [formData, setFormData] = useState({
     username: "root",
     password: "QWqw!@12",
+    email: "",
+    profile: avatar,
   });
-  const [profileImage, setProfileImage] = useState(avatar);
   const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
@@ -60,8 +61,11 @@ const Login = () => {
         const response = await axios.get(
           `http://localhost:5000/api/user/${username}`
         );
-        setProfileImage(response.data.user.profile || avatar);
-        console.log("response ", response.data);
+        setFormData({
+          ...formData,
+          email: response.data.user.email,
+          profileImage: response.data.user.profile || avatar,
+        });
         setStep(2);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -84,25 +88,31 @@ const Login = () => {
         localStorage.setItem("token", response.data.token);
         login(response.data.token);
         console.log("response ", response.data);
+        toast.success(response.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
       }
     }
   };
 
-  return step === 1 ? (
-    <Username
-      username={formData.username}
-      handleChange={handleChange}
-      handleUsernameSubmit={handleUsernameSubmit}
-    />
-  ) : (
-    <Password
-      profileImage={profileImage}
-      password={formData.password}
-      handleChange={handleChange}
-      handlePasswordSubmit={handlePasswordSubmit}
-    />
+  return (
+    <div className="container mx-auto flex items-center justify-center h-screen">
+      {step === 1 ? (
+        <Username
+          username={formData.username}
+          handleChange={handleChange}
+          handleUsernameSubmit={handleUsernameSubmit}
+        />
+      ) : (
+        <Password
+          profileImage={formData.profile}
+          email={formData.email}
+          password={formData.password}
+          handleChange={handleChange}
+          handlePasswordSubmit={handlePasswordSubmit}
+        />
+      )}
+    </div>
   );
 };
 

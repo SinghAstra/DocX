@@ -1,7 +1,6 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { toast } from "react-hot-toast";
 import profile from "../assets/avatar_2.jpeg";
 import { AuthContext } from "../context/AuthContext";
 import styles from "../styles/Username.module.css";
@@ -96,7 +95,6 @@ const Profile = () => {
 
   return (
     <div className="container mx-auto flex items-center justify-center h-screen">
-      <Toaster />
       <div className={`${styles.glass} py-2`}>
         <div className="flex flex-col items-center">
           <h4 className="text-5xl font-medium text-[#92DCE5]">Profile</h4>
@@ -177,7 +175,7 @@ const Profile = () => {
         <div className="text-center py-4">
           <span className="text-black">
             Come back Later ?{" "}
-            <button className="text-red-500" onClick={logout}>
+            <button className="text-[#06BEE1]" onClick={logout}>
               Log Out
             </button>
           </span>
