@@ -1,6 +1,8 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import sendEmail from "../utils/sendEmail.js";
 import { validateEmail, validatePassword } from "../utils/validation.js";
 
 function generateOTP() {
@@ -126,19 +128,51 @@ export const loginUserController = async (req, res) => {
 };
 
 export const forgotPasswordController = async (req, res) => {
-  res.json({ message: "Forgot password logic here" });
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  try {
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    user.resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(otp)
+      .digest("hex");
+    user.resetPasswordExpire = Date.now() + 10 * 60 * 1000; // 10 minutes
+    await user.save();
+
+    // Send email
+    const message = `You are receiving this email because you (or someone else) has requested a password reset. Your OTP is: ${otp}`;
+
+    await sendEmail({
+      email: user.email,
+      subject: "Password Reset Request",
+      message,
+    });
+
+    res.status(200).json({ message: "Email sent" });
+  } catch (error) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+    console.log("error is ", error);
+    res.status(500).json({ message: "Error sending email" });
+  }
 };
 
 export const tokenVerificationController = async (req, res) => {
   try {
-    const { userName } = req.user;
+    const { username } = req.user;
 
     // Check if username is provided in the query
-    if (!userName) {
+    if (!username) {
       return res.status(400).json({ message: "Username is required" });
     }
     // Check if user exists in the database
-    const user = await User.findOne({ username: userName });
+    const user = await User.findOne({ username });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

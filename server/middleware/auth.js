@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 
 export default function (req, res, next) {
-  console.log("In the authHeader");
   const authHeader = req.header("Authorization");
 
   // Check if Authorization header exists

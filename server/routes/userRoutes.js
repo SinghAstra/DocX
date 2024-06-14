@@ -3,6 +3,7 @@ import {
   authenticateUserController,
   createResetSessionController,
   fetchUserController,
+  forgotPasswordController,
   generateOTPController,
   loginUserController,
   registerUserController,
@@ -18,7 +19,7 @@ const router = express.Router();
 
 router.post("/register", registerUserController);
 router.post("/login", loginUserController);
-// router.post("/forgotPassword", forgotPasswordController);
+router.post("/forgotPassword", forgotPasswordController);
 
 router.get("/", authMiddleware, tokenVerificationController);
 router.get("/:userName", fetchUserController);

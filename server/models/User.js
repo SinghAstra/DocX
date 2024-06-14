@@ -20,6 +20,8 @@ export const UserSchema = new mongoose.Schema({
   mobile: { type: Number },
   address: { type: String },
   profile: { type: String },
+  resetPasswordToken: String,
+  resetPasswordExpire: Date,
 });
 
 export default mongoose.model("User", UserSchema);
