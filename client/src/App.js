@@ -1,6 +1,13 @@
 import { useContext } from "react";
 import { Toaster } from "react-hot-toast";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  RouterProvider,
+  Routes,
+  createBrowserRouter,
+  createRoutesFromChildren,
+} from "react-router-dom";
 import Loader from "./components/Loader/Loader";
 import Login from "./components/Login";
 import PageNotFound from "./components/PageNotFound";
@@ -20,33 +27,67 @@ function App() {
     return <Loader />;
   }
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: isAuthenticated ? <Home /> : <Login />,
-    },
-    {
-      path: "/register",
-      element: <PublicRoute component={Register} />,
-    },
-    {
-      path: "/recovery",
-      element: <PublicRoute component={Recovery} />,
-    },
-    {
-      path: "/profile",
-      element: <PrivateRoute component={Profile} />,
-    },
-    {
-      path: "/reset",
-      element: <PublicRoute component={Reset} />,
-    },
-    {
-      path: "*",
-      element: <PageNotFound></PageNotFound>,
-    },
-  ]);
-  return <RouterProvider router={router}></RouterProvider>;
+  const routes = createRoutesFromChildren(
+    <>
+      <Route
+        path="/"
+        element={
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/recovery"
+        element={
+          <PublicRoute>
+            <Recovery />
+          </PublicRoute>
+        }
+      />
+      <Route
+        path="/reset"
+        element={
+          <PublicRoute>
+            <Reset />
+          </PublicRoute>
+        }
+      />
+      <Route path="*" element={<PageNotFound />} />
+    </>
+  );
+
+  const router = createBrowserRouter(routes);
+
+  return (
+    <RouterProvider router={router}>
+      <Toaster />
+    </RouterProvider>
+  );
 }
 
 export default App;
