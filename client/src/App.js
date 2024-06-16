@@ -29,54 +29,16 @@ function App() {
 
   const routes = createRoutesFromChildren(
     <>
-      <Route
-        path="/"
-        element={
-          <PrivateRoute>
-            <Home />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <PrivateRoute>
-            <Profile />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/login"
-        element={
-          <PublicRoute>
-            <Login />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/register"
-        element={
-          <PublicRoute>
-            <Register />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/recovery"
-        element={
-          <PublicRoute>
-            <Recovery />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/reset"
-        element={
-          <PublicRoute>
-            <Reset />
-          </PublicRoute>
-        }
-      />
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/recovery" element={<Recovery />} />
+        <Route path="/reset" element={<Reset />} />
+      </Route>
+      <Route element={<PrivateRoute />}>
+        <Route path="/" element={<Home />} />
+        <Route path="profile" element={<Profile />} />
+      </Route>
       <Route path="*" element={<PageNotFound />} />
     </>
   );
