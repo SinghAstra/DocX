@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
-import avatar from "../assets/profile.png";
 import { AuthContext } from "../context/AuthContext";
 import Password from "./Password";
 import Username from "./Username";
@@ -9,11 +8,10 @@ import Username from "./Username";
 const Login = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    username: "root",
+    username: "Abhay",
     password: "QWqw!@12",
-    email: "",
-    profile: avatar,
   });
+  const [userInfo, setUserInfo] = useState({});
   const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
@@ -61,13 +59,10 @@ const Login = () => {
         const response = await axios.get(
           `http://localhost:5000/api/user/${username}`
         );
-        setFormData({
-          ...formData,
-          email: response.data.user.email,
-          profileImage: response.data.user.profile || avatar,
-        });
+        setUserInfo(response.data.user);
         setStep(2);
       } catch (error) {
+        console.log("error is ", error);
         toast.error(error.response.data.message);
       }
     }
@@ -87,7 +82,6 @@ const Login = () => {
         );
         localStorage.setItem("token", response.data.token);
         login(response.data.token);
-        console.log("response ", response.data);
         toast.success(response.data.message);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -105,8 +99,7 @@ const Login = () => {
         />
       ) : (
         <Password
-          profileImage={formData.profile}
-          email={formData.email}
+          userInfo={userInfo}
           password={formData.password}
           handleChange={handleChange}
           handlePasswordSubmit={handlePasswordSubmit}

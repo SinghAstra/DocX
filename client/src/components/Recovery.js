@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import styles from "../styles/Username.module.css";
 
 const Recovery = () => {
   const [formData, setFormData] = useState({ otp: "" });
+  const { handleForgotPassword } = useContext(AuthContext);
+  const location = useLocation();
+  if (!location.state) {
+    return <Navigate to="/" />;
+  }
+  const { email } = location.state;
+  console.log("email is ", email);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,11 +31,22 @@ const Recovery = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const { otp } = formData;
     if (validateForm()) {
-      console.log("Form submitted:", formData);
-      toast.success("Form submitted successfully!");
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/user/verifyOTP",
+          {
+            email,
+            otp,
+          }
+        );
+        toast.success(response.data.message);
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
     }
   };
 
@@ -57,16 +77,18 @@ const Recovery = () => {
                 Verify OTP
               </button>
             </div>
-
-            <div className="text-center py-4">
-              <span className="text-black font-medium">
-                Email Not Sent ?{" "}
-                <Link className="text-[#06BEE1]" to="/recovery">
-                  Resend Email
-                </Link>
-              </span>
-            </div>
           </form>
+          <div className="text-center py-4">
+            <span className="text-black font-medium">
+              Email Not Sent ?{" "}
+              <button
+                className="text-[#06BEE1]"
+                onClick={() => handleForgotPassword(email)}
+              >
+                Resend Email
+              </button>
+            </span>
+          </div>
         </div>
       </div>
     </div>

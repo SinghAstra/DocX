@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const AuthContext = createContext();
 
@@ -46,9 +47,36 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
   };
 
+  const handleForgotPassword = async (email) => {
+    const toastId = toast.loading("Sending email...");
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/user/forgotPassword",
+        {
+          email,
+        }
+      );
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.response.data.message);
+      console.log("error is ", error);
+    } finally {
+      toast.dismiss(toastId);
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, user, setUser, loading, login, logout }}
+      value={{
+        isAuthenticated,
+        handleForgotPassword,
+        user,
+        setUser,
+        loading,
+        setLoading,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
