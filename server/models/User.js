@@ -22,6 +22,10 @@ export const UserSchema = new mongoose.Schema({
   profile: { type: String },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
+  isOtpVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default mongoose.model("User", UserSchema);

@@ -174,6 +174,7 @@ export const verifyOTPController = async (req, res) => {
 
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
+    user.isOtpVerified = true;
     await user.save();
 
     res.status(200).json({ message: "OTP verified" });
@@ -228,10 +229,6 @@ export const fetchUserController = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error while fetching user Info." });
   }
-};
-
-export const generateOTPController = (req, res) => {
-  res.json({ message: "Generate OTP logic here" });
 };
 
 export const createResetSessionController = (req, res) => {
@@ -291,6 +288,29 @@ export const updateUserController = async (req, res) => {
   }
 };
 
-export const resetPasswordController = (req, res) => {
-  res.json({ message: "Reset password logic here" });
+export const resetPasswordController = async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.isOtpVerified) {
+      return res.status(400).json({ message: "OTP not verified" });
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(newPassword, salt);
+
+    // Clear the OTP verification flag
+    user.isOtpVerified = false;
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successful" });
+  } catch (error) {
+    res.status(500).json({ message: "Error resetting password" });
+  }
 };
