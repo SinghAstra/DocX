@@ -1,10 +1,13 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
+import { Navigate, useLocation } from "react-router-dom";
 import styles from "../styles/Username.module.css";
 
 const Reset = () => {
+  const location = useLocation();
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -12,6 +15,12 @@ const Reset = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  if (!location.state) {
+    return <Navigate to="/" />;
+  }
+
+  const { email } = location.state;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,11 +65,21 @@ const Reset = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form submitted:", formData);
-      toast.success("Form submitted successfully!");
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/user/resetPassword",
+          {
+            email,
+            newPassword: formData.password,
+          }
+        );
+        toast.success(response.data.message);
+      } catch (error) {
+        toast.error(error.response.data.message);
+      }
     }
   };
 
@@ -69,9 +88,11 @@ const Reset = () => {
       <div className={`${styles.glass} flex flex-col justify-between`}>
         <div className="flex flex-col items-center">
           <div>
-            <h4 className="text-5xl font-bold">Reset Password</h4>
+            <h4 className="text-4xl font-medium text-[#7edbe9]">
+              Reset Password
+            </h4>
             {!isPasswordValid() && (
-              <div className="text-base text-gray-500 mt-5 ">
+              <div className="text-base text-white my-5 ">
                 Password must
                 <br />
                 be at least 8 characters long:{" "}

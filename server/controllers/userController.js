@@ -309,8 +309,9 @@ export const resetPasswordController = async (req, res) => {
     user.isOtpVerified = false;
     await user.save();
 
-    res.status(200).json({ message: "Password reset successful" });
+    res.status(200).json({ message: "Password reset successfully." });
   } catch (error) {
+    clg;
     res.status(500).json({ message: "Error resetting password" });
   }
 };

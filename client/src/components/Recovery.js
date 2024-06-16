@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import styles from "../styles/Username.module.css";
 
@@ -9,6 +9,7 @@ const Recovery = () => {
   const [formData, setFormData] = useState({ otp: "" });
   const { handleForgotPassword } = useContext(AuthContext);
   const location = useLocation();
+  const navigate = useNavigate();
   if (!location.state) {
     return <Navigate to="/" />;
   }
@@ -44,6 +45,11 @@ const Recovery = () => {
           }
         );
         toast.success(response.data.message);
+        navigate("/reset", {
+          state: {
+            email,
+          },
+        });
       } catch (error) {
         toast.error(error.response.data.message);
       }
