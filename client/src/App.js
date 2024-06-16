@@ -1,16 +1,14 @@
 import { useContext } from "react";
 import { Toaster } from "react-hot-toast";
 import {
-  BrowserRouter,
   Route,
   RouterProvider,
-  Routes,
   createBrowserRouter,
   createRoutesFromChildren,
 } from "react-router-dom";
 import Loader from "./components/Loader/Loader";
 import Login from "./components/Login";
-import PageNotFound from "./components/PageNotFound";
+import NotFound from "./components/NotFound/NotFound";
 import PrivateRoute from "./components/PrivateRoute";
 import Profile from "./components/Profile";
 import PublicRoute from "./components/PublicRoute";
@@ -39,7 +37,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="profile" element={<Profile />} />
       </Route>
-      <Route path="*" element={<PageNotFound />} />
+      <Route path="*" element={<NotFound />} />
     </>
   );
 
