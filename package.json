@@ -1,0 +1,17 @@
+{
+  "name": "basedatax",
+  "version": "1.0.0",
+  "description": "This project transforms data from DummyJSON into a custom-built REST API with enhanced features and persistent storage. It serves as a bridge between the dummy data service and a production-ready API implementation, complete with database storage and advanced querying capabilities.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "deploy": "npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
