@@ -10,7 +10,7 @@ import { siteConfig } from "@/config/site";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { AlignLeftIcon } from "lucide-react";
 import DocsMenu from "./docs-menu";
-import { NavMenu } from "./navbar";
+import { NavMenu } from "./site-header";
 
 export function SheetLeftBar() {
   return (

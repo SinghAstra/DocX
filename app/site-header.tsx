@@ -6,6 +6,7 @@ import { GithubIcon, TwitterIcon } from "lucide-react";
 import Link from "next/link";
 import Anchor from "./anchor";
 import { SheetLeftBar } from "./leftbar";
+import { MainNav } from "./main-nav";
 
 export const NAVLINKS = [
   {
@@ -30,22 +31,13 @@ export const NAVLINKS = [
   },
 ];
 
-export function Navbar() {
+export function SiteHeader() {
   return (
-    <div className="border-b border-dotted h-16 sticky top-0 z-50 backdrop-blur-sm flex items-center justify-between md:px-4 ">
-      <div className="flex items-center sm:gap-5 gap-2.5">
-        <SheetLeftBar />
-        <div className="flex items-center gap-6">
-          <div className="sm:flex hidden">
-            <h2 className="text-md font-bold font-code">{siteConfig.name}</h2>
-          </div>
-          <div className="md:flex hidden items-center gap-4 text-sm font-medium text-muted-foreground">
-            <NavMenu />
-          </div>
-        </div>
-      </div>
+    <div className="border-b border-dotted h-16 sticky top-0 z-50  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center md:px-4 ">
+      <SheetLeftBar />
+      <MainNav />
 
-      <div className="flex items-center sm:justify-normal justify-between sm:gap-3 ml-1 sm:w-fit w-[90%]">
+      <div className=" ml-auto flex items-center sm:justify-normal justify-between sm:gap-3  sm:w-fit w-[90%]">
         <div className="flex items-center justify-between sm:gap-2">
           <div className="flex ml-4 sm:ml-0">
             <Link

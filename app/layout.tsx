@@ -2,7 +2,7 @@ import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
-import { Navbar } from "./navbar";
+import { SiteHeader } from "./site-header";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -55,7 +55,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased min-h-screen bg-background">
         <NextTopLoader color="hsl(var(--primary))" showSpinner={false} />
-        <Navbar />
+        <SiteHeader />
         {children}
       </body>
     </html>
