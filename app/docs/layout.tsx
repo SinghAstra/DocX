@@ -6,13 +6,11 @@ export default function DocsLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
-      <aside className="border-grid fixed top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 border-r md:sticky md:block">
-        <div className="no-scrollbar h-full overflow-auto py-6 pr-4 lg:py-8">
-          <DocsNav />
-        </div>
+    <div className="flex">
+      <aside className="border-r border-dotted fixed left-0 inset-y-0 w-64 hidden md:flex mt-10 py-6  lg:py-8 overflow-auto">
+        <DocsNav />
       </aside>
-      {children}
+      <div className="px-2 md:ml-64">{children}</div>
     </div>
   );
 }
