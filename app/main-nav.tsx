@@ -1,5 +1,6 @@
 "use client";
 
+import { navLinks } from "@/config/nav";
 import { siteConfig } from "@/config/site";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -17,16 +18,21 @@ export function MainNav() {
       </Link>
 
       <nav className="flex items-center gap-4 text-sm xl:gap-6">
-        <BorderHoverLink
-          href="/docs/installation"
-          isActive={pathname === "/docs/installation"}
-        >
-          Docs
-        </BorderHoverLink>
-
-        <BorderHoverLink href="/blog" isActive={pathname.startsWith("/blog")}>
-          Blog
-        </BorderHoverLink>
+        {navLinks.mainNav.map((navLink, index) => {
+          const isHomePage = navLink.href === "/";
+          const isActive =
+            (!isHomePage && pathname.includes(navLink.href)) ||
+            (isHomePage && pathname === navLink.href);
+          return (
+            <BorderHoverLink
+              key={index}
+              href={navLink.href}
+              isActive={isActive}
+            >
+              {navLink.title}
+            </BorderHoverLink>
+          );
+        })}
       </nav>
     </div>
   );

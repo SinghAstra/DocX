@@ -1,4 +1,4 @@
-import { SiteConfig } from "@/interafces/site";
+import { SiteConfig } from "@/interfaces/site";
 
 export const siteConfig: SiteConfig = {
   name: "DocumentX",

@@ -2,7 +2,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 import { page_routes } from "@/lib/routes-config";
 import { GithubIcon, TwitterIcon } from "lucide-react";
-import Link from "next/link";
 import { MainNav } from "./main-nav";
 import { MobileNav } from "./mobile-nav";
 
@@ -35,27 +34,29 @@ export function SiteHeader() {
       <MobileNav />
       <MainNav />
 
-      <div className=" ml-auto flex items-center sm:justify-normal justify-between sm:gap-3  sm:w-fit w-[90%]">
+      <div className=" ml-auto flex items-center gap-3 ">
         <div className="flex items-center justify-between sm:gap-2">
           <div className="flex ml-4 sm:ml-0">
-            <Link
+            <a
               href={siteConfig.links.github}
               className={buttonVariants({
                 variant: "ghost",
                 size: "icon",
               })}
+              target="_blank"
             >
               <GithubIcon />
-            </Link>
-            <Link
+            </a>
+            <a
               href={siteConfig.links.twitter}
               className={buttonVariants({
                 variant: "ghost",
                 size: "icon",
               })}
+              target="_blank"
             >
               <TwitterIcon />
-            </Link>
+            </a>
           </div>
         </div>
       </div>

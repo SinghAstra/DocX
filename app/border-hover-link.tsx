@@ -1,9 +1,10 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 interface BorderHoverLinkProps {
   href: string;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   isActive?: boolean;
 }
@@ -13,6 +14,7 @@ const BorderHoverLink = ({
   children,
   isActive,
   className,
+  ...props
 }: BorderHoverLinkProps) => {
   return (
     <Link
@@ -25,6 +27,7 @@ const BorderHoverLink = ({
         isActive && "after:scale-x-100 text-foreground",
         className
       )}
+      {...props}
     >
       {children}
     </Link>
