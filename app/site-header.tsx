@@ -1,12 +1,10 @@
 import { buttonVariants } from "@/components/ui/button";
-import { SheetClose } from "@/components/ui/sheet";
 import { siteConfig } from "@/config/site";
 import { page_routes } from "@/lib/routes-config";
 import { GithubIcon, TwitterIcon } from "lucide-react";
 import Link from "next/link";
-import Anchor from "./anchor";
-import { SheetLeftBar } from "./leftbar";
 import { MainNav } from "./main-nav";
+import { MobileNav } from "./mobile-nav";
 
 export const NAVLINKS = [
   {
@@ -33,8 +31,8 @@ export const NAVLINKS = [
 
 export function SiteHeader() {
   return (
-    <div className="border-b border-dotted h-16 sticky top-0 z-50  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center md:px-4 ">
-      <SheetLeftBar />
+    <div className="border-b border-dotted h-16 sticky top-0 z-50  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex items-center px-4 ">
+      <MobileNav />
       <MainNav />
 
       <div className=" ml-auto flex items-center sm:justify-normal justify-between sm:gap-3  sm:w-fit w-[90%]">
@@ -62,32 +60,5 @@ export function SiteHeader() {
         </div>
       </div>
     </div>
-  );
-}
-
-export function NavMenu({ isSheet = false }) {
-  return (
-    <>
-      {NAVLINKS.map((item) => {
-        const Comp = (
-          <Anchor
-            key={item.title + item.href}
-            activeClassName="!text-primary dark:font-medium font-semibold"
-            absolute
-            className="flex items-center gap-1 sm:text-base text-[14.5px] dark:text-stone-300/85 text-stone-800"
-            href={item.href}
-          >
-            {item.title}
-          </Anchor>
-        );
-        return isSheet ? (
-          <SheetClose key={item.title + item.href} asChild>
-            {Comp}
-          </SheetClose>
-        ) : (
-          Comp
-        );
-      })}
-    </>
   );
 }
