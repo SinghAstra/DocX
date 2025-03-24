@@ -1,12 +1,12 @@
 import { SiteConfig } from "@/interafces/site";
 
 export const siteConfig: SiteConfig = {
-  name: "DocX",
+  name: "DocumentX",
   description:
     "A modern, customizable documentation template for your projects",
-  url: "https://docx.vercel.app",
+  url: "https://documentx.vercel.app",
   links: {
     twitter: "https://x.com/XSinghAstra",
-    github: "https://github.com/SinghAstra/DocX",
+    github: "https://github.com/SinghAstra/DocumentX",
   },
 };
