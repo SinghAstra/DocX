@@ -13,7 +13,7 @@ export const navLinks: NavLinks = {
       href: "/",
     },
     {
-      title: "Documentation",
+      title: "Docs",
       href: "/docs",
     },
     {
