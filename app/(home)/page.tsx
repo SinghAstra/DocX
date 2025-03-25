@@ -32,8 +32,7 @@ const HomePage = () => {
             <GradientActionButton onClick={handleGetStarted}>
               ✨ Start Reading
             </GradientActionButton>
-
-            <h1 className="text-foreground text-center py-6 text-3xl height font-medium text-balance sm:text-4xl md:text-5xl lg:text-7xl  w-full">
+            <h1 className=" text-4xl  md:text-5xl lg:text-7xl  leading-10 sm:leading-[4.5rem] text-foreground text-left sm:text-center py-6 font-bold">
               Reusable Docs Template <br />
               <span className="text-transparent bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text inline-bloc">
                 For Your Next Project
