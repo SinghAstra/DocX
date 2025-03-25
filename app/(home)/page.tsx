@@ -64,12 +64,13 @@ const HomePage = () => {
                 </Link>
               </GradientActionButton>
               <GradientActionButton rounded="md">
-                <Link
+                <a
                   href={siteConfig.links.githubRepo}
                   className="flex items-center"
+                  target="_blank"
                 >
                   Github
-                </Link>
+                </a>
               </GradientActionButton>
             </div>
           </AnimationContainer>
