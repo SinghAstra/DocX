@@ -58,11 +58,15 @@ const HomePage = () => {
               </BorderHoverLink>
             </p>
             <div className="flex items-center justify-center whitespace-nowrap gap-4">
-              <GradientActionButton rounded="md">
-                <Link href="/docs" className="flex items-center">
+              <BackgroundShine>
+                <Link href="/docs" className="flex items-center group">
                   Get started for free
+                  <ArrowRightIcon
+                    className="ml-1 size-4 transition-transform duration-300 
+            ease-in-out group-hover:translate-x-2"
+                  />
                 </Link>
-              </GradientActionButton>
+              </BackgroundShine>
               <GradientActionButton rounded="md">
                 <a
                   href={siteConfig.links.githubRepo}
@@ -105,14 +109,17 @@ const HomePage = () => {
             transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
             className="flex flex-col items-center justify-center gap-8  "
           >
-            <h1 className="mt-8 bg-muted-foreground py-4 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl">
-              Youtube Videos to <br />
-              Structured Knowledge
+            <h1 className="mt-8 text-foreground py-4  text-center text-4xl font-medium tracking-tight md:text-7xl">
+              Simplified <br />
+              Writing Docs
             </h1>
             <BackgroundShine>
-              <Link href="/docs" className="flex items-center ">
+              <Link href="/docs" className="flex items-center group">
                 Get started for free
-                <ArrowRightIcon className="w-4 h-4 ml-2" />
+                <ArrowRightIcon
+                  className="ml-1 size-4 transition-transform duration-300 
+            ease-in-out group-hover:translate-x-2"
+                />
               </Link>
             </BackgroundShine>
           </motion.div>

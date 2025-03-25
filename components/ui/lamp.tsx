@@ -32,24 +32,24 @@ export const LampContainer = ({ children, className }: LampContainerProps) => {
             transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
             className="absolute left-1/2 top-[2rem] h-[50vh] w-[30rem] bg-gradient-to-r from-[hsl(var(--muted))] to-transparent"
           />
-          {/* Blur for the bottom */}
+          {/* Blur for the bottom  */}
           <div className="absolute top-1/2 inset-x-0 h-[50vh] -translate-y-24 w-full  bg-[hsl(var(--card))] blur-3xl" />
           {/* Light coming out from source */}
           <motion.div
             initial={{ width: "15rem" }}
             whileInView={{ width: "28rem" }}
             transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
-            className="absolute z-50 h-[30vh] rounded-full bg-[hsl(var(--primary))] opacity-50 blur-3xl top-[2rem] "
+            className="absolute z-50 h-[30vh] rounded-full bg-[hsl(var(--primary))] opacity-50 top-[2rem] blur-3xl "
           />
           {/* Light source */}
           <motion.div
             initial={{ width: "15rem" }}
             whileInView={{ width: "30rem" }}
             transition={{ delay: 0.3, duration: 0.8, ease: "easeInOut" }}
-            className="absolute z-50 h-1.5 w-[30rem] top-[2rem] bg-[hsl(var(--primary))]"
+            className="absolute z-50 h-1 w-[30rem] top-[2rem] bg-[hsl(var(--primary))]"
           />
           {/* Shade for the top */}
-          <div className="absolute z-40 h-[2rem] w-full top-0 bg-[hsl(var(--background))] blur-4xl " />
+          <div className="absolute z-40 h-[2rem] w-full top-0 bg-[hsl(var(--background))] blur-4xl" />
         </div>
       </div>
 
