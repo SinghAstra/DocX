@@ -15,8 +15,8 @@ import { siteConfig } from "@/config/site";
 import { AlignLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import BorderHoverLink from "./border-hover-link";
-import DocsMenu from "./docs-menu";
+import DashedHoverLink from "./dashed-hover-link";
+import { DocsNavSheet } from "./docs-nav-sheet";
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -41,20 +41,21 @@ export function MobileNav() {
         <div className="flex flex-col gap-4 overflow-y-auto">
           <div className="flex flex-col gap-2.5 mt-3 mx-2 px-5  items-start">
             {navLinks.mainNav.map((navLink, index) => {
+              const isHomePage = navLink.href === "/";
+              const isActive =
+                (!isHomePage && pathname.includes(navLink.href)) ||
+                (isHomePage && pathname === navLink.href);
               return (
                 <SheetClose asChild key={index}>
-                  <BorderHoverLink
-                    href={navLink.href}
-                    isActive={pathname.startsWith(navLink.href)}
-                  >
+                  <DashedHoverLink href={navLink.href} isActive={isActive}>
                     {navLink.title}
-                  </BorderHoverLink>
+                  </DashedHoverLink>
                 </SheetClose>
               );
             })}
           </div>
-          <div className="ml-2 pl-5">
-            <DocsMenu isSheet />
+          <div className=" pl-5">
+            <DocsNavSheet />
           </div>
         </div>
       </SheetContent>

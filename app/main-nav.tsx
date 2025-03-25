@@ -4,13 +4,13 @@ import { navLinks } from "@/config/nav";
 import { siteConfig } from "@/config/site";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import BorderHoverLink from "./border-hover-link";
+import DashedHoverLink from "./dashed-hover-link";
 
 export function MainNav() {
   const pathname = usePathname();
 
   return (
-    <div className="mr-4 hidden md:flex gap-4">
+    <div className="mr-4 hidden md:flex gap-8">
       <Link href="/">
         <span className="hidden font-bold lg:inline-block">
           {siteConfig.name}
@@ -24,13 +24,13 @@ export function MainNav() {
             (!isHomePage && pathname.includes(navLink.href)) ||
             (isHomePage && pathname === navLink.href);
           return (
-            <BorderHoverLink
+            <DashedHoverLink
               key={index}
               href={navLink.href}
               isActive={isActive}
             >
               {navLink.title}
-            </BorderHoverLink>
+            </DashedHoverLink>
           );
         })}
       </nav>

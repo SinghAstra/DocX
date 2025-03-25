@@ -4,6 +4,7 @@ export type SiteConfig = {
   url: string;
   links: {
     twitter: string;
+    githubRepo: string;
     github: string;
   };
 };

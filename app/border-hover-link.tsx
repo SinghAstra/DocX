@@ -20,16 +20,19 @@ const BorderHoverLink = ({
     <Link
       href={href}
       className={cn(
-        "relative inline-block text-muted-foreground transition-all duration-300 ease-in-out",
-        "after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-full after:border-b after:border-dotted after:border-current",
-        "after:scale-x-0 after:transform after:transition-transform after:duration-300 after:ease-in-out",
-        "hover:after:scale-x-100",
-        isActive && "after:scale-x-100 text-foreground",
+        "relative inline-block transition-colors duration-300 text-muted-foreground hover:text-foreground group",
+        isActive && "text-foreground",
         className
       )}
       {...props}
     >
       {children}
+      <span
+        className={cn(
+          "absolute bottom-0 left-0 w-full h-[1px] bg-foreground origin-right transition-transform duration-700 group-hover:scale-x-100 group-hover:origin-left",
+          isActive ? "scale-x-100" : "scale-x-0"
+        )}
+      />
     </Link>
   );
 };
