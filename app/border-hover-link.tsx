@@ -20,7 +20,7 @@ const BorderHoverLink = ({
     <Link
       href={href}
       className={cn(
-        "relative inline-block transition-colors duration-300 text-muted-foreground hover:text-foreground group",
+        "relative inline-block transition-colors duration-300 text-muted-foreground hover:text-foreground group ",
         isActive && "text-foreground",
         className
       )}

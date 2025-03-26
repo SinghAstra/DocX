@@ -1,16 +1,17 @@
 import { Button } from "@/components/ui/button";
-import { promises as fs } from "fs";
-import Link from "next/link";
-import path from "path";
-// import rehypeAutolinkHeadings from "rehype-autolink-headings";
-// import rehypeCodeTitles from "rehype-code-titles";
-// import rehypePrism from "rehype-prism-plus";
-// import rehypeSlug from "rehype-slug";
-// import remarkGfm from "remark-gfm";
 import { navLinks } from "@/config/nav";
+import { promises as fs } from "fs";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
-import { cn } from "./utils";
+import Link from "next/link";
+import path from "path";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeCodeTitles from "rehype-code-titles";
+import rehypePrism from "rehype-prism-plus";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
+import { visit } from "unist-util-visit";
+import { cn, getIconName, hasSupportedExtension } from "./utils";
 
 export const components = {
   Button,
@@ -23,7 +24,7 @@ export const components = {
   h2: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h2
       className={cn(
-        "font-heading text-3xl font-medium  mt-12 scroll-m-20  first:mt-0",
+        "font-heading text-3xl font-medium  mt-12 scroll-m-20  first:mt-0 border-b border-dashed w-fit",
         className
       )}
       {...props}
@@ -56,7 +57,7 @@ export const components = {
   p: ({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
     <p
       className={cn(
-        "leading-[1.65rem] [&:not(:first-child)]:mt-6 font-thin",
+        "leading-[1.65rem] [&:not(:first-child)]:mt-6 font-thin ",
         className
       )}
       {...props}
@@ -152,8 +153,16 @@ async function parseMdx(rawMdx: string) {
     options: {
       parseFrontmatter: true,
       mdxOptions: {
-        rehypePlugins: [],
-        remarkPlugins: [],
+        rehypePlugins: [
+          preProcess,
+          rehypeCodeTitles,
+          rehypeCodeTitlesWithLogo,
+          rehypePrism,
+          rehypeSlug,
+          rehypeAutolinkHeadings,
+          postProcess,
+        ],
+        remarkPlugins: [remarkGfm],
       },
     },
     components,
@@ -211,5 +220,88 @@ export function getPreviousNext(path: string) {
   return {
     prev: index > 0 ? flattenedNav[index - 1] : null,
     next: index < flattenedNav.length - 1 ? flattenedNav[index + 1] : null,
+  };
+}
+
+export async function getDocsToc(slug: string) {
+  const contentPath = getDocsContentPath(slug);
+  const rawMdx = await fs.readFile(contentPath, "utf-8");
+  // captures heading from h2 to h4
+  const headingsRegex = /^(#{2,4})\s(.+)$/gm;
+  let match;
+  const extractedHeadings = [];
+  while ((match = headingsRegex.exec(rawMdx)) !== null) {
+    const headingLevel = match[1].length;
+    const headingText = match[2].trim();
+    const slug = getSlug(headingText);
+    extractedHeadings.push({
+      level: headingLevel,
+      text: headingText,
+      href: `#${slug}`,
+    });
+  }
+  return extractedHeadings;
+}
+
+function getSlug(text: string) {
+  const slug = text.toLowerCase().replace(/\s+/g, "-");
+  return slug.replace(/[^a-z0-9-]/g, "");
+}
+
+// for copying the code in pre
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const preProcess = () => (tree: any) => {
+  visit(tree, (node) => {
+    if (node?.type === "element" && node?.tagName === "pre") {
+      const [codeEl] = node.children;
+      if (codeEl.tagName !== "code") return;
+      node.raw = codeEl.children?.[0].value;
+    }
+  });
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const postProcess = () => (tree: any) => {
+  visit(tree, "element", (node) => {
+    if (node?.type === "element" && node?.tagName === "pre") {
+      node.properties["raw"] = node.raw;
+    }
+  });
+};
+
+function rehypeCodeTitlesWithLogo() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (tree: any) => {
+    visit(tree, "element", (node) => {
+      if (
+        node?.tagName === "div" &&
+        node?.properties?.className?.includes("rehype-code-title")
+      ) {
+        const titleTextNode = node.children.find(
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          (child: any) => child.type === "text"
+        );
+        if (!titleTextNode) return;
+
+        // Extract filename and language
+        const titleText = titleTextNode.value;
+        const match = hasSupportedExtension(titleText);
+        if (!match) return;
+
+        const splittedNames = titleText.split(".");
+        const ext = splittedNames[splittedNames.length - 1];
+        const iconClass = `devicon-${getIconName(ext)}-plain text-[17px]`;
+
+        // Insert icon before title text
+        if (iconClass) {
+          node.children.unshift({
+            type: "element",
+            tagName: "i",
+            properties: { className: [iconClass, "code-icon"] },
+            children: [],
+          });
+        }
+      }
+    });
   };
 }
