@@ -9,7 +9,6 @@ body {
 
 @layer base {
   :root {
-    /* Dark theme colors inspired by Astro docs */
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -34,7 +33,6 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    /* Radius */
     --radius: 0.875rem;
   }
 }

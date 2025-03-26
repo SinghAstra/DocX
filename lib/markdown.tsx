@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { promises as fs } from "fs";
-// import { compileMDX } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import path from "path";
 // import rehypeAutolinkHeadings from "rehype-autolink-headings";
@@ -9,6 +8,7 @@ import path from "path";
 // import rehypeSlug from "rehype-slug";
 // import remarkGfm from "remark-gfm";
 import matter from "gray-matter";
+import { compileMDX } from "next-mdx-remote/rsc";
 import { cn } from "./utils";
 
 export const components = {
@@ -25,7 +25,7 @@ export const components = {
   h2: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h2
       className={cn(
-        "font-heading text-9xl text-yellow-400 mt-16 scroll-m-20 border-b pb-4  font-semibold tracking-tight first:mt-0",
+        "font-heading text-3xl  mt-16 scroll-m-20 border-b pb-4  font-semibold tracking-tight first:mt-0",
         className
       )}
       {...props}
@@ -160,39 +160,41 @@ function getDocsContentPath(slug: string) {
   return path.join(process.cwd(), "/content/docs/", `${slug}/index.mdx`);
 }
 
-// async function parseMdx<Frontmatter>(rawMdx: string) {
-//   return await compileMDX<Frontmatter>({
-//     source: rawMdx,
-//     options: {
-//       parseFrontmatter: true,
-//       mdxOptions: {
-//         rehypePlugins: [
-//           rehypeCodeTitles,
-//           rehypePrism,
-//           rehypeSlug,
-//           rehypeAutolinkHeadings,
-//         ],
-//         remarkPlugins: [remarkGfm],
-//       },
-//     },
-//   });
-// }
+async function parseMdx(rawMdx: string) {
+  // First, parse frontmatter using gray-matter
+  const { data } = matter(rawMdx);
+
+  const { content: mdxContent } = await compileMDX({
+    source: rawMdx,
+    options: {
+      parseFrontmatter: true,
+      mdxOptions: {
+        rehypePlugins: [],
+        remarkPlugins: [],
+      },
+    },
+    components,
+  });
+
+  const frontmatter: BaseMdxFrontmatter = {
+    title: data.title || "Untitled",
+    description: data.description || "No description available",
+  };
+
+  return {
+    content: mdxContent,
+    frontmatter,
+  };
+}
 
 export async function getDocsForSlug(slug: string) {
   try {
     const contentPath = getDocsContentPath(slug);
     const rawMdx = await fs.readFile(contentPath, "utf-8");
-    // Parse the frontmatter using gray-matter
-    const { content, data } = matter(rawMdx);
+    const { content, frontmatter } = await parseMdx(rawMdx);
 
-    // Validate the frontmatter structure
-    const frontmatter: BaseMdxFrontmatter = {
-      title: data.title || "Untitled",
-      description: data.description || "No description available.",
-    };
-    // Return both raw MDX content and frontmatter
     return {
-      rawMdx: content,
+      content,
       frontmatter,
     };
   } catch (err) {

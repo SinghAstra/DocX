@@ -1,5 +1,4 @@
-import { components, getDocsForSlug } from "@/lib/markdown";
-import { MDXRemote } from "next-mdx-remote/rsc";
+import { getDocsForSlug } from "@/lib/markdown";
 import { notFound } from "next/navigation";
 
 interface DocsPageProps {
@@ -14,7 +13,7 @@ export default async function DocsPage(props: DocsPageProps) {
   const pathName = slug.join("/");
   const res = await getDocsForSlug(pathName);
 
-  if (!res || !res.rawMdx) notFound();
+  if (!res || !res.content) notFound();
   return (
     <div className="flex">
       <div className="py-1">
@@ -24,7 +23,7 @@ export default async function DocsPage(props: DocsPageProps) {
         <p className="-mt-4 text-muted-foreground sm:text-[16.5px] text-[14.5px]">
           {res.frontmatter.description}
         </p>
-        <MDXRemote source={res.rawMdx} components={components} />
+        {res.content}
         {/* <Pagination pathname={pathName} /> */}
       </div>
       {/* <Toc path={pathName} /> */}
