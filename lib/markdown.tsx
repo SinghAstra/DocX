@@ -141,7 +141,9 @@ export type BaseMdxFrontmatter = {
 };
 
 function getDocsContentPath(slug: string) {
-  return path.join(process.cwd(), "/content/docs/", `${slug}/index.mdx`);
+  const isIntroduction = slug === "";
+  const contentPath = isIntroduction ? `index.mdx` : `${slug}/index.mdx`;
+  return path.join(process.cwd(), "/content/docs/", contentPath);
 }
 
 async function parseMdx(rawMdx: string) {
@@ -198,8 +200,6 @@ export function getPreviousNext(path: string) {
   // Flatten the sidebar navigation items
   const flattenedNav: { title: string; href: string }[] = [];
   const isIntroduction = path === "";
-  console.log("isIntroduction is ", isIntroduction);
-  console.log("path is ", path);
 
   navLinks.sidebarNav.forEach((section) => {
     section.items?.forEach((item) => {

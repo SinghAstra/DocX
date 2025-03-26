@@ -13,9 +13,8 @@ export default async function DocsPage(props: DocsPageProps) {
   const { slug = [] } = params;
 
   const pathName = slug.join("/");
-  const res = await getDocsForSlug(pathName);
 
-  console.log("pathname is ", pathName);
+  const res = await getDocsForSlug(pathName);
 
   if (!res || !res.content) notFound();
   return (
