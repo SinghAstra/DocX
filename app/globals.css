@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 body {
-  font-family: "Space Mono", "Space Grotesk", monospace;
+  font-family: "Space Grotesk", "Space Mono", monospace;
 }
 
 @layer base {

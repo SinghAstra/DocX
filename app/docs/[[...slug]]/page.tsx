@@ -1,5 +1,6 @@
 import { getDocsForSlug } from "@/lib/markdown";
 import { notFound } from "next/navigation";
+import DocsNavigation from "./docs-navigation";
 
 interface DocsPageProps {
   params: Promise<{ slug: string[] }>;
@@ -13,18 +14,18 @@ export default async function DocsPage(props: DocsPageProps) {
   const pathName = slug.join("/");
   const res = await getDocsForSlug(pathName);
 
+  console.log("pathname is ", pathName);
+
   if (!res || !res.content) notFound();
   return (
     <div className="flex">
-      <div className="py-1">
-        <h1 className="sm:text-3xl text-2xl !-mt-0.5">
-          {res.frontmatter.title}
-        </h1>
-        <p className="-mt-4 text-muted-foreground sm:text-[16.5px] text-[14.5px]">
+      <div className="p-4">
+        <h1 className="text-4xl font-semibold">{res.frontmatter.title}</h1>
+        <p className="text-muted-foreground mb-12">
           {res.frontmatter.description}
         </p>
         {res.content}
-        {/* <Pagination pathname={pathName} /> */}
+        <DocsNavigation pathname={pathName} />
       </div>
       {/* <Toc path={pathName} /> */}
     </div>
