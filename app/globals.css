@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+@import "devicon/devicon.min.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "prismjs/themes/prism-tomorrow.css";
 
 body {
   font-family: "Space Grotesk", "Space Mono", monospace;
@@ -78,4 +78,61 @@ body {
   *::-webkit-scrollbar-corner {
     background: transparent;
   }
+}
+
+/* Prism Syntax Highlighting */
+
+.keyword {
+  color: #f97583; /* GitHub Light Red */
+}
+
+.function {
+  color: #d2a8ff; /* GitHub Light Purple */
+}
+
+.punctuation {
+  color: #c9d1d9; /* GitHub Light Gray */
+}
+
+.comment {
+  color: #8b949e; /* GitHub Muted Gray */
+}
+
+.string,
+.constant,
+.annotation,
+.boolean,
+.number {
+  color: #79c0ff; /* GitHub Light Blue */
+}
+
+.tag {
+  color: #a5d6ff; /* GitHub Cyan */
+}
+
+.attr-name {
+  color: #d2a8ff; /* GitHub Light Purple */
+}
+
+.attr-value {
+  color: #ffa657; /* GitHub Light Orange */
+}
+
+pre > code {
+  display: grid;
+  max-width: inherit !important;
+  padding: 10px 14px !important;
+}
+
+.rehype-code-title {
+  margin-top: 1rem;
+  margin-bottom: -1rem;
+  border: 1px solid hsl(var(--border));
+  letter-spacing: 0.025em;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 0px 14px;
+  border-radius: 4px;
+  background-color: hsl(var(--muted) / 0.2);
 }

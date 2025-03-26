@@ -1,3 +1,4 @@
+import Pre from "@/components/markdown/pre";
 import { Button } from "@/components/ui/button";
 import { navLinks } from "@/config/nav";
 import { promises as fs } from "fs";
@@ -130,6 +131,13 @@ export const components = {
   Link: ({ className, ...props }: React.ComponentProps<typeof Link>) => (
     <Link
       className={cn("font-medium underline underline-offset-4", className)}
+      {...props}
+    />
+  ),
+  pre: Pre,
+  code: ({ className, ...props }: React.ComponentProps<"code">) => (
+    <code
+      className={cn("rounded px-1 py-0.5 border bg-muted/20", className)}
       {...props}
     />
   ),
@@ -290,7 +298,9 @@ function rehypeCodeTitlesWithLogo() {
 
         const splittedNames = titleText.split(".");
         const ext = splittedNames[splittedNames.length - 1];
-        const iconClass = `devicon-${getIconName(ext)}-plain text-[17px]`;
+        const iconClass = `devicon-${getIconName(
+          ext
+        )}-plain text-[17px] colored`;
 
         // Insert icon before title text
         if (iconClass) {
