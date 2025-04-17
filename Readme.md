@@ -1,2 +1,2 @@
-# DocX
-- build your own docs
+# DocX - WIP
+- template so that you build your own docs
