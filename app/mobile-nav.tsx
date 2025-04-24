@@ -15,7 +15,7 @@ import { siteConfig } from "@/config/site";
 import { AlignLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import DashedHoverLink from "./dashed-hover-link";
+import BorderHoverLink from "./border-hover-link";
 import { DocsNavSheet } from "./docs-nav-sheet";
 
 export function MobileNav() {
@@ -47,9 +47,9 @@ export function MobileNav() {
                 (isHomePage && pathname === navLink.href);
               return (
                 <SheetClose asChild key={index}>
-                  <DashedHoverLink href={navLink.href} isActive={isActive}>
+                  <BorderHoverLink href={navLink.href} isActive={isActive}>
                     {navLink.title}
-                  </DashedHoverLink>
+                  </BorderHoverLink>
                 </SheetClose>
               );
             })}

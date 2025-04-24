@@ -1,4 +1,4 @@
-import AnimationContainer from "@/components/global/animation-container";
+import FadeIn from "@/components/global/fade-in";
 import MaxWidthWrapper from "@/components/global/max-width-wrapper";
 import { siteConfig } from "@/config/site";
 import BorderHoverLink from "../border-hover-link";
@@ -9,7 +9,7 @@ const Footer = () => {
       <footer className="flex  py-4 relative items-center justify-between border-t border-border  w-full  mx-auto  bg-[radial-gradient(35%_128px_at_50%_0%,theme(backgroundColor.white/8%),transparent)]">
         <div className="absolute top-0 left-1/2 right-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-1.5 bg-foreground rounded-full"></div>
 
-        <AnimationContainer delay={0.1}>
+        <FadeIn delay={0.1}>
           <span className=" text-muted-foreground text-sm flex items-center tracking-wider">
             Made by{" "}
             <BorderHoverLink
@@ -19,8 +19,8 @@ const Footer = () => {
               SinghAstra
             </BorderHoverLink>
           </span>
-        </AnimationContainer>
-        <AnimationContainer delay={0.4}>
+        </FadeIn>
+        <FadeIn delay={0.4}>
           <span className="text-neutral-200 text-sm flex items-center tracking-wider">
             <BorderHoverLink
               href={siteConfig.links.twitter}
@@ -29,7 +29,7 @@ const Footer = () => {
               Connect on X
             </BorderHoverLink>
           </span>
-        </AnimationContainer>
+        </FadeIn>
       </footer>
     </MaxWidthWrapper>
   );

@@ -16,26 +16,6 @@ export const navLinks: NavLinks = {
       title: "Docs",
       href: "/docs",
     },
-    {
-      title: "Components",
-      href: "/docs/components/accordion",
-    },
-    {
-      title: "Blocks",
-      href: "/blocks",
-    },
-    {
-      title: "Charts",
-      href: "/charts",
-    },
-    {
-      title: "Themes",
-      href: "/themes",
-    },
-    {
-      title: "Colors",
-      href: "/colors",
-    },
   ],
   sidebarNav: [
     {
