@@ -1,5 +1,7 @@
 import Pre from "@/components/markdown/pre";
+import { Stepper, StepperItem } from "@/components/markdown/stepper";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { navLinks } from "@/config/nav";
 import { promises as fs } from "fs";
 import matter from "gray-matter";
@@ -16,6 +18,12 @@ import { cn, getIconName, hasSupportedExtension } from "./utils";
 
 export const components = {
   Button,
+  Stepper,
+  StepperItem,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h1
       className={cn("font-heading mt-8 scroll-m-20 text-4xl  ", className)}
