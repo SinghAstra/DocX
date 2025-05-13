@@ -1,3 +1,4 @@
+import Providers from "@/components/providers/provider";
 import { siteConfig } from "@/config/site";
 import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
@@ -54,9 +55,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased min-h-screen bg-background">
-        <NextTopLoader color="hsl(var(--primary))" showSpinner={false} />
-        <SiteHeader />
-        {children}
+        <Providers>
+          <NextTopLoader color="hsl(var(--primary))" showSpinner={false} />
+          <SiteHeader />
+          {children}
+        </Providers>
       </body>
     </html>
   );

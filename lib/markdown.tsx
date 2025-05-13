@@ -1,12 +1,8 @@
 import Pre from "@/components/markdown/pre";
-import { Stepper, StepperItem } from "@/components/markdown/stepper";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { navLinks } from "@/config/nav";
 import { promises as fs } from "fs";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
-import Link from "next/link";
 import path from "path";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeCodeTitles from "rehype-code-titles";
@@ -16,138 +12,23 @@ import remarkGfm from "remark-gfm";
 import { visit } from "unist-util-visit";
 import { cn, getIconName, hasSupportedExtension } from "./utils";
 
-export const components = {
-  Button,
-  Stepper,
-  StepperItem,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-  h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h1
-      className={cn("font-heading mt-8 scroll-m-20 text-4xl  ", className)}
-      {...props}
-    />
-  ),
-  h2: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h2
-      className={cn(
-        "font-heading text-3xl font-medium  mt-12 scroll-m-20  first:mt-0 border-b border-dashed w-fit",
-        className
-      )}
-      {...props}
-    />
-  ),
-  h3: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h3
-      className={cn("font-heading mt-6 scroll-m-20 text-lg", className)}
-      {...props}
-    />
-  ),
-  h4: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h4
-      className={cn("font-heading mt-6 scroll-m-20 text-lg ", className)}
-      {...props}
-    />
-  ),
-  h5: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h5 className={cn("mt-6 scroll-m-20 text-lg ", className)} {...props} />
-  ),
-  h6: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
-    <h6 className={cn("mt-6 scroll-m-20 text-base", className)} {...props} />
-  ),
-  a: ({ className, ...props }: React.HTMLAttributes<HTMLAnchorElement>) => (
-    <a
-      className={cn("font-medium underline underline-offset-4", className)}
-      {...props}
-    />
-  ),
-  p: ({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) => (
-    <p
-      className={cn(
-        "leading-[1.65rem] [&:not(:first-child)]:mt-6 font-thin ",
-        className
-      )}
-      {...props}
-    />
-  ),
+const components = {
   strong: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <strong className={cn("font-normal", className)} {...props} />
-  ),
-  ul: ({ className, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
-    <ul className={cn("my-6 ml-6 list-disc", className)} {...props} />
-  ),
-  ol: ({ className, ...props }: React.HTMLAttributes<HTMLOListElement>) => (
-    <ol className={cn("my-6 ml-6 list-decimal", className)} {...props} />
-  ),
-  li: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <li className={cn("mt-2", className)} {...props} />
-  ),
-  blockquote: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <blockquote
-      className={cn("mt-6 border-l-2 pl-6 italic", className)}
-      {...props}
-    />
-  ),
-  img: ({
-    className,
-    alt,
-    ...props
-  }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img className={cn("rounded-md", className)} alt={alt} {...props} />
-  ),
-  hr: ({ ...props }: React.HTMLAttributes<HTMLHRElement>) => (
-    <hr className="my-4 " {...props} />
-  ),
-  table: ({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) => (
-    <div className="my-4 w-full overflow-y-auto">
-      <table
-        className={cn(
-          "relative w-full overflow-hidden border-none text-sm",
-          className
-        )}
-        {...props}
-      />
-    </div>
-  ),
-  tr: ({ className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) => (
-    <tr
-      className={cn("last:border-b-none m-0 border-b", className)}
-      {...props}
-    />
-  ),
-  th: ({ className, ...props }: React.HTMLAttributes<HTMLTableCellElement>) => (
-    <th
-      className={cn(
-        "px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right",
-        className
-      )}
-      {...props}
-    />
-  ),
-  td: ({ className, ...props }: React.HTMLAttributes<HTMLTableCellElement>) => (
-    <td
-      className={cn(
-        "px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right",
-        className
-      )}
-      {...props}
-    />
-  ),
-  Link: ({ className, ...props }: React.ComponentProps<typeof Link>) => (
-    <Link
-      className={cn("font-medium underline underline-offset-4", className)}
-      {...props}
-    />
+    <strong className={cn("text-purple-400", className)} {...props} />
   ),
   pre: Pre,
-  code: ({ className, ...props }: React.ComponentProps<"code">) => (
-    <code
-      className={cn("rounded px-1 py-0.5 border bg-muted/20", className)}
-      {...props}
-    />
+  code: ({ className, children, ...props }: React.ComponentProps<"code">) => {
+    return (
+      <code
+        className={`${className} text-sm  py-0.5 px-1 rounded  border`}
+        {...props}
+      >
+        {children}
+      </code>
+    );
+  },
+  em: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
+    <em className={cn("not-italic", className)} {...props} />
   ),
 };
 

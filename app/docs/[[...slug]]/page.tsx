@@ -1,3 +1,4 @@
+import { Typography } from "@/components/ui/typography";
 import { getDocsForSlug } from "@/lib/markdown";
 import { notFound } from "next/navigation";
 import DocsNavigation from "./docs-navigation";
@@ -24,7 +25,7 @@ export default async function DocsPage(props: DocsPageProps) {
         <p className="text-muted-foreground mb-12">
           {res.frontmatter.description}
         </p>
-        {res.content}
+        <Typography>{res.content}</Typography>
         <DocsNavigation pathname={pathName} />
       </div>
       <Toc path={pathName} />
