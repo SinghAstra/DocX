@@ -29,8 +29,7 @@ const BorderHoverLink = ({
       {children}
       <span
         className={cn(
-          "absolute bottom-0 left-0 w-full h-[1px] bg-foreground origin-right transition-transform duration-700 group-hover:scale-x-100 group-hover:origin-left",
-          isActive ? "scale-x-100" : "scale-x-0"
+          "absolute scale-x-0 bottom-0 left-0 w-full h-[1px] bg-foreground origin-right transition-transform duration-700 group-hover:scale-x-100 group-hover:origin-left"
         )}
       />
     </Link>

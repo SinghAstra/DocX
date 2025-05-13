@@ -9,10 +9,6 @@ export interface NavLinks {
 export const navLinks: NavLinks = {
   mainNav: [
     {
-      title: "Home",
-      href: "/",
-    },
-    {
       title: "Docs",
       href: "/docs",
     },
