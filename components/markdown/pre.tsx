@@ -16,7 +16,7 @@ export default function Pre({
   return (
     <div className=" relative bg-muted/20 rounded w-[550px] my-10  border mx-auto ">
       <div className="text-sm px-3 py-1 border-b bg-muted/20 rounded-t flex items-center justify-between">
-        {filename}
+        <span className="tracking-widest ">{filename}</span>
         <div className="ml-auto flex gap-2">
           <div
             className="border w-6 h-6 flex items-center justify-center rounded cursor-pointer hover:bg-muted transition-all duration-200"
@@ -32,8 +32,8 @@ export default function Pre({
       </div>
 
       <Dialog open={showMaximize} onOpenChange={setShowMaximize}>
-        <DialogContent className="max-w-3xl border p-0">
-          <div className="max-h-[80vh] overflow-auto text-sm whitespace-pre-wrap px-3 py-2">
+        <DialogContent className=" border sm:rounded-none w-fit h-fit p-0   text-sm ">
+          <div className="max-w-[80vw] max-h-[80vh] overflow-auto py-4 px-3 pr-12 ">
             <pre {...rest}>{children}</pre>
           </div>
         </DialogContent>

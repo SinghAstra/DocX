@@ -5,12 +5,11 @@ import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 import path from "path";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import rehypeCodeTitles from "rehype-code-titles";
 import rehypePrism from "rehype-prism-plus";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { visit } from "unist-util-visit";
-import { cn, getIconName, hasSupportedExtension } from "./utils";
+import { cn } from "./utils";
 
 const components = {
   strong: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
@@ -54,8 +53,7 @@ async function parseMdx(rawMdx: string) {
       mdxOptions: {
         rehypePlugins: [
           preProcess,
-          rehypeCodeTitles,
-          rehypeCodeTitlesWithLogo,
+          normalizeLanguage,
           rehypePrism,
           rehypeSlug,
           rehypeAutolinkHeadings,
@@ -153,6 +151,13 @@ const preProcess = () => (tree: any) => {
       const [codeEl] = node.children;
       if (codeEl.tagName !== "code") return;
       node.raw = codeEl.children?.[0].value;
+      const meta = codeEl.data?.meta;
+      if (meta && typeof meta === "string") {
+        const fileMatch = meta.match(/title=([\w./-]+)/);
+        if (fileMatch) {
+          node.filename = fileMatch[1];
+        }
+      }
     }
   });
 };
@@ -162,45 +167,42 @@ const postProcess = () => (tree: any) => {
   visit(tree, "element", (node) => {
     if (node?.type === "element" && node?.tagName === "pre") {
       node.properties["raw"] = node.raw;
+      node.properties["filename"] = node.filename;
     }
   });
 };
 
-function rehypeCodeTitlesWithLogo() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (tree: any) => {
-    visit(tree, "element", (node) => {
-      if (
-        node?.tagName === "div" &&
-        node?.properties?.className?.includes("rehype-code-title")
-      ) {
-        const titleTextNode = node.children.find(
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (child: any) => child.type === "text"
-        );
-        if (!titleTextNode) return;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const normalizeLanguage = () => (tree: any) => {
+  const supported = new Set([
+    "js",
+    "ts",
+    "tsx",
+    "jsx",
+    "html",
+    "css",
+    "json",
+    "bash",
+    "python",
+    "c",
+    "cpp",
+    "java",
+  ]);
 
-        // Extract filename and language
-        const titleText = titleTextNode.value;
-        const match = hasSupportedExtension(titleText);
-        if (!match) return;
+  visit(tree, "element", (node) => {
+    if (node.tagName === "code" && node.properties?.className) {
+      const classNames = node.properties.className;
+      const langClass = classNames.find((c: string) =>
+        c.startsWith("language-")
+      );
 
-        const splittedNames = titleText.split(".");
-        const ext = splittedNames[splittedNames.length - 1];
-        const iconClass = `devicon-${getIconName(
-          ext
-        )}-plain text-[17px] colored`;
-
-        // Insert icon before title text
-        if (iconClass) {
-          node.children.unshift({
-            type: "element",
-            tagName: "i",
-            properties: { className: [iconClass, "code-icon"] },
-            children: [],
-          });
+      if (langClass) {
+        const lang = langClass.replace("language-", "");
+        if (!supported.has(lang)) {
+          // fallback to plain text if unsupported
+          node.properties.className = ["language-text"];
         }
       }
-    });
-  };
-}
+    }
+  });
+};
