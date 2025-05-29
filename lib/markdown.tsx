@@ -12,9 +12,7 @@ import { visit } from "unist-util-visit";
 import { cn } from "./utils";
 
 const components = {
-  strong: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <strong className={cn("text-purple-400", className)} {...props} />
-  ),
+
   pre: Pre,
   code: ({ className, children, ...props }: React.ComponentProps<"code">) => {
     return (
@@ -26,9 +24,6 @@ const components = {
       </code>
     );
   },
-  em: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-    <em className={cn("not-italic", className)} {...props} />
-  ),
 };
 
 export type BaseMdxFrontmatter = {
