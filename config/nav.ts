@@ -21,11 +21,6 @@ export const navLinks: NavLinks = {
           href: "/docs",
           items: [],
         },
-        {
-          title: "Sub Heading",
-          href: "/docs/sub-heading",
-          items: [],
-        },
       ],
     },
   ],

@@ -17,8 +17,6 @@ export default function Pre({
   const [showMaximize, setShowMaximize] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
 
-  console.log("filename is ", filename);
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (divRef.current && !divRef.current.contains(event.target as Node)) {
