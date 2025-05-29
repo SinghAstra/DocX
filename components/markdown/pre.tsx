@@ -17,6 +17,8 @@ export default function Pre({
   const [showMaximize, setShowMaximize] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
 
+  console.log("filename is ", filename);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (divRef.current && !divRef.current.contains(event.target as Node)) {
@@ -66,7 +68,7 @@ export default function Pre({
       {showMaximize && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <motion.div
-            className="bg-background rounded-xl border w-fit max-w-[95vw] max-h-[90vh] flex flex-col shadow-2xl"
+            className="bg-background rounded-xl border min-w-[60vw] w-fit max-w-[95vw] max-h-[90vh] flex flex-col shadow-2xl"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}

@@ -11,6 +11,7 @@ interface CopyProps {
 }
 
 export default function Copy({ content, fileName }: CopyProps) {
+  console.log("fileName in copy is ", fileName);
   const [isCopied, setIsCopied] = useState(false);
   const { setToastMessage } = useToastContext();
 

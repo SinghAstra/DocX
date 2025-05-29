@@ -9,10 +9,8 @@ import rehypePrism from "rehype-prism-plus";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { visit } from "unist-util-visit";
-import { cn } from "./utils";
 
 const components = {
-
   pre: Pre,
   code: ({ className, children, ...props }: React.ComponentProps<"code">) => {
     return (

@@ -1,225 +1,214 @@
 ---
-title: Getting Started with Algolia DocSearch
-description: Learn how to integrate Algolia DocSearch into your documentation.
+title: Getting Started with DocumentX
+description: DocumentX is open source and is maintained by SinghAstra
 ---
 
-The `Tabs` component allows you to organize content into multiple sections, enabling users to switch between them easily. This is particularly useful for displaying related content in a compact manner.
+# 🚀 Welcome to DocumentX
 
-## Preview
+**DocumentX** is a sleek, developer-focused UI documentation system designed for fast, beautiful, and responsive docs — with minimal setup. Whether you're documenting a library, API, or internal tool, DocumentX helps you write, navigate, and share knowledge effortlessly.
 
-In this guide, we utilize a custom `Stepper` component, specifically designed for AriaDocs, which enables users to display step-by-step instructions directly within the markdown render.
+## ✨ Features
 
-## Preview
+- ⚡ MDX-based rendering
+- 📚 Auto Table of Contents
+- 🧠 Code highlighting with copy-to-clipboard
+- 🔍 Clean, accessible typography
+- 🧩 Built-in components for layout and styling
+- 🌑 Dark mode support
+- 🛠️ Open Source & Easy to Extend
 
-##
+## 🛠 Installation
 
-[Algolia DocSearch](https://docsearch.algolia.com/) provides a fast, relevant search experience for documentation sites. It powers the search in this project (**Ariadocs**). Follow this guide to integrate it into your documentation.
+To get started with DocumentX UI in your Next.js app:
 
-## Apply for DocSearch
-
-Algolia provides **DocSearch** for open-source projects for free. To apply:
-
-1. Visit the [DocSearch Application](https://docsearch.algolia.com/apply/).
-2. Fill out the form with details about your documentation:
-   - Your website URL
-   - The selectors for headings and content
-   - Your GitHub repository link (if applicable)
-3. Submit your request. Once approved, Algolia will provide:
-   - Application ID
-   - Search API Key
-   - Index Name
-
-## Install DocSearch in Your Project
-
-To integrate DocSearch, install the required package:
-
-```sh
-npm install @docsearch/react@3
+```bash
+npm install documentx-ui
+# or
+yarn add documentx-ui
 ```
 
-## Create a Search Component
+## 📁 Folder Structure
 
-In your React project, create a Search Component using `@docsearch/react`:
+Here's a recommended folder layout:
 
-```jsx title=src/components/Search.js
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+```
+/docs
+  ├─ /getting-started.mdx
+  ├─ /components.mdx
+  └─ /faq.mdx
+```
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
+Each `.mdx` file will be parsed and rendered using your parser logic and injected with the proper frontmatter for metadata.
+
+## 🧠 Frontmatter
+
+DocumentX supports frontmatter for defining title and description metadata per page.
+
+```md
+---
+title: Introduction
+description: Learn how to get started with DocumentX UI.
+---
+```
+
+## 🔌 MDX Parsing
+
+DocumentX uses a robust MDX compiler with plugins for syntax highlighting, automatic headings, and more.
+
+```ts
+const { content: mdxContent } = await compileMDX({
+  source: rawMdx,
+  options: {
+    parseFrontmatter: true,
+    mdxOptions: {
+      rehypePlugins: [
+        preProcess,
+        normalizeLanguage,
+        rehypePrism,
+        rehypeSlug,
+        rehypeAutolinkHeadings,
+        postProcess,
+      ],
+      remarkPlugins: [remarkGfm],
+    },
+  },
+  components,
+});
+```
+
+## 🌲 Auto Table of Contents
+
+Using this regex, headings are extracted dynamically from each doc:
+
+```ts
+const headingsRegex = /^(#{2,4})\s(.+)$/gm;
+```
+
+This enables a smooth scroll experience and a generated ToC.
+
+## 🧩 Components
+
+Wrap your MDX with our `<Typography>` component to apply global styles:
+
+```tsx
+export function Typography({ children }: PropsWithChildren) {
+  return <div className="prose prose-invert ...">{children}</div>;
 }
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+```
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+## 💡 Code Blocks with Metadata
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+Add metadata to your code blocks like file names:
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+```ts
+<pre><code title="config.ts" class="language-ts">
+export const config = {
+  darkMode: true,
+};
+</code></pre>
+```
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+Our `preProcess` plugin will extract and attach these:
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+```ts
+const preProcess = () => (tree: any) => {
+  visit(tree, (node) => {
+    if (node.tagName === "pre") {
+      const [codeEl] = node.children;
+      node.raw = codeEl.children?.[0].value;
+      const meta = codeEl.data?.meta;
+      const fileMatch = meta?.match(/title=([\w./-]+)/);
+      node.filename = fileMatch?.[1];
+    }
+  });
+};
+```
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+## 🧼 Normalized Code Languages
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+Unsupported languages fallback to plain text:
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+```ts
+const normalizeLanguage = () => (tree: any) => {
+  const supported = new Set(["js", "ts", "tsx", "jsx", "html", ...]);
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+  visit(tree, "element", (node) => {
+    if (node.tagName === "code") {
+      const classNames = node.properties?.className;
+      const lang = classNames?.find((c: string) => c.startsWith("language-"));
+      if (lang && !supported.has(lang.replace("language-", ""))) {
+        node.properties.className = ["language-text"];
+      }
+    }
+  });
+};
+```
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+---
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+## 🧭 Previous & Next Navigation
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
-asmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; l asmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; lasmdplmasldm                                    msdl;am;sam;lfmasl;mannerm;lmq  ;lw;lme;lmqwl; l
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
-}
-import { DocSearch } from "@docsearch/react";
-import "@docsearch/css";
+Automatically resolve previous/next pages using:
 
-export function Search() {
-  return (
-    <DocSearch
-      appId="YOUR_APP_ID"
-      indexName="YOUR_INDEX_NAME"
-      apiKey="YOUR_SEARCH_API_KEY"
-    />
-  );
+```ts
+export function getPreviousNext(path: string) {
+  // logic to flatten nav and match route
+  return {
+    prev: ...,
+    next: ...
+  };
 }
+```
+
+---
+
+## 🔍 Slug Creation
+
+Generate slugs from heading text:
+
+```ts
+function getSlug(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+}
+```
+
+This powers the ToC anchor links and heading navigation.
+
+---
+
+## ❤️ Maintained by SinghAstra
+
+DocumentX is proudly open-source. Contribute, fork, or give us a ⭐ on GitHub.
+
+---
+
+## 📎 Example Usage
+
+Here’s a minimal example of a full `.mdx` page:
+
+````mdx
+---
+title: Example Page
+description: A demo of DocumentX UI in action
+---
+
+# Example Page
+
+Welcome to DocumentX UI. Here’s a code example:
+
+```ts title=app.ts
+console.log("DocumentX is awesome!");
+```
+````
+
+## Next Steps
+
+- Explore `components.mdx`
+- Customize your styles
+
+```
+
 ```

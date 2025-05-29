@@ -18,7 +18,6 @@ const BorderHoverLink = ({
   target,
   ...props
 }: BorderHoverLinkProps) => {
-  console.log("target in BorderHoverLink:", target);
   return (
     <Link
       href={href}
