@@ -19,8 +19,8 @@ export default async function DocsPage(props: DocsPageProps) {
 
   if (!res || !res.content) notFound();
   return (
-    <div className="flex">
-      <div className="p-4 xl:mr-[20rem]">
+    <div className="flex  w-full">
+      <div className="p-4 flex-1">
         <h1 className="text-4xl font-semibold">{res.frontmatter.title}</h1>
         <p className="text-muted-foreground mb-12">
           {res.frontmatter.description}

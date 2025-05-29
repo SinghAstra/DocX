@@ -7,6 +7,7 @@ interface BorderHoverLinkProps {
   children: ReactNode;
   className?: string;
   isActive?: boolean;
+  target?: string;
 }
 
 const BorderHoverLink = ({
@@ -14,8 +15,10 @@ const BorderHoverLink = ({
   children,
   isActive,
   className,
+  target,
   ...props
 }: BorderHoverLinkProps) => {
+  console.log("target in BorderHoverLink:", target);
   return (
     <Link
       href={href}
@@ -24,6 +27,7 @@ const BorderHoverLink = ({
         isActive && "text-foreground",
         className
       )}
+      target={target}
       {...props}
     >
       {children}

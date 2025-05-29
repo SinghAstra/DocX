@@ -11,16 +11,10 @@ import { ArrowRightIcon } from "lucide-react";
 import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import BorderHoverLink from "../border-hover-link";
 import GradientActionButton from "../gradient-action-button";
 
 const HomePage = () => {
-  const router = useRouter();
-
-  const handleGetStarted = () => {
-    router.push("/docs");
-  };
   return (
     <div className="overflow-x-hidden scrollbar-hide ">
       {/* Hero Section */}
@@ -30,9 +24,9 @@ const HomePage = () => {
             className="flex flex-col items-center justify-center w-full text-center"
             delay={0.1}
           >
-            <GradientActionButton onClick={handleGetStarted}>
-              ✨ Start Reading
-            </GradientActionButton>
+            <Link href={"/docs"}>
+              <GradientActionButton>✨ Start Reading</GradientActionButton>
+            </Link>
             <h1 className="text-foreground text-center py-6 text-5xl font-medium text-balance sm:text-6xl md:text-7xl lg:text-8xl  w-full">
               Reusable <br />
               <span className="text-transparent bg-gradient-to-r from-violet-500 to-fuchsia-500 bg-clip-text inline-bloc">
@@ -44,6 +38,7 @@ const HomePage = () => {
               <BorderHoverLink
                 href={siteConfig.links.githubRepo}
                 className="text-foreground"
+                target="_blank"
               >
                 {siteConfig.name}
               </BorderHoverLink>{" "}
@@ -53,6 +48,7 @@ const HomePage = () => {
               <BorderHoverLink
                 href={siteConfig.links.github}
                 className="text-foreground"
+                target="_blank"
               >
                 SinghAstra
               </BorderHoverLink>
@@ -68,13 +64,13 @@ const HomePage = () => {
                 </Link>
               </BackgroundShine>
               <GradientActionButton rounded="md">
-                <a
+                <Link
                   href={siteConfig.links.githubRepo}
                   className="flex items-center"
                   target="_blank"
                 >
                   Github
-                </a>
+                </Link>
               </GradientActionButton>
             </div>
           </FadeIn>
