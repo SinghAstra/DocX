@@ -109,13 +109,15 @@ const HomePage = () => {
               Simplified <br />
               Writing Docs
             </h1>
-            <Link href="/docs" className="flex items-center group">
+            <Link href="/docs">
               <BackgroundShine>
-                Get started for free
-                <ArrowRightIcon
-                  className="ml-1 size-4 transition-transform duration-300 
+                <div className="flex items-center group">
+                  Get started for free
+                  <ArrowRightIcon
+                    className="ml-1 size-4 transition-transform duration-300 
             ease-in-out group-hover:translate-x-2"
-                />
+                  />
+                </div>
               </BackgroundShine>
             </Link>
           </motion.div>
