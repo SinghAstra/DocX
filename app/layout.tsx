@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.name,
     description: siteConfig.description,
-    images: ["/assets/landing.png"],
+    images: ["/assets/hero.png"],
     creator: "@singhastra",
   },
   icons: {
